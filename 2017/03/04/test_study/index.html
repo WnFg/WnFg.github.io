@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        asd｜Wfang&#39;s blog
+        使用test命令的测试功能｜Wfang&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://wnfg.github.io/2017/03/03/asd/">
+    <link rel="canonical" href="http://wnfg.github.io/2017/03/04/test_study/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -145,15 +145,18 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>asd</h1>
+                    <h1>使用test命令的测试功能</h1>
                     
                     <span class="meta">
                          作者 Wfang
                         <span>
-                          日期 2017-03-03
+                          日期 2017-03-04
                          </span>
                     </span>
                     <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#bash"
+                           title="bash">bash</a>
                         
                     </div>
                 </div>
@@ -162,7 +165,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            asd
+            使用test命令的测试功能
         </span>
     </div>
 </header>
@@ -173,18 +176,73 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                
+                <p>###test语法结构<br>test condition 待测对象<br>示例：test -e filename   测试文件名是否存在<br>test等价于’[ expression ]’，后者常用于if…else语句</p>
+<p>###test可理解的表达式类型分为四类：</p>
+<ul>
+<li>表达式判断</li>
+<li>字符串比较</li>
+<li>数字比较</li>
+<li>文件比较</li>
+</ul>
+<p>##1.判断表达式</p>
+<ul>
+<li>if test  (表达式为真)</li>
+<li>if test !表达式为假</li>
+<li>test 表达式1 –a 表达式2　　两个表达式都为真</li>
+<li>test 表达式1 –o 表达式2　　两个表达式有一个为真</li>
+</ul>
+<p>##2.判断字符串</p>
+<ul>
+<li>test –n 字符串　　　字符串的长度非零 </li>
+<li>test –z 字符串　　　字符串的长度为零</li>
+<li>test 字符串1 ＝ 字符串2　　字符串相等</li>
+<li>test 字符串1 !＝ 字符串2　　字符串不等</li>
+</ul>
+<p>##3.判断整数</p>
+<ul>
+<li>test 整数1 –eq 整数2　　整数相等</li>
+<li>test 整数1 –ge 整数2　　整数1大于等于整数2</li>
+<li>test 整数1 –gt 整数2　　整数1大于整数2</li>
+<li>test 整数1 –le 整数2　　整数1小于等于整数2</li>
+<li>test 整数1 –lt 整数2　　整数1小于整数2</li>
+<li>test 整数1 –ne 整数2　　整数1不等于整数2</li>
+</ul>
+<p>##4.判断文件</p>
+<ul>
+<li>test  File1 –ef  File2　　两个文件具有同样的设备号和i结点号</li>
+<li>test  File1 –nt  File2　　文件1比文件2 新</li>
+<li>test  File1 –ot  File2　　文件1比文件2 旧</li>
+<li>test –b File　　文件存在并且是块设备文件</li>
+<li>test –c File　　文件存在并且是字符设备文件</li>
+<li>test –d File　　文件存在并且是目录</li>
+<li>test –e File　　文件存在</li>
+<li>test –f File　　文件存在并且是正规文件</li>
+<li>test –g File　　文件存在并且是设置了组ID</li>
+<li>test –G File　　文件存在并且属于有效组ID</li>
+<li>test –h File　　文件存在并且是一个符号链接（同-L）</li>
+<li>test –k File　　文件存在并且设置了sticky位</li>
+<li>test –b File　　文件存在并且是块设备文件</li>
+<li>test –L File　　文件存在并且是一个符号链接（同-h）</li>
+<li>test –o File　　文件存在并且属于有效用户ID</li>
+<li>test –p File　　文件存在并且是一个命名管道</li>
+<li>test –r File　　文件存在并且可读</li>
+<li>test –s File　　文件存在并且是一个套接字</li>
+<li>test –t FD　　　文件描述符是在一个终端打开的</li>
+<li>test –u File　　文件存在并且设置了它的set-user-id位</li>
+<li>test –w File　　文件存在并且可写</li>
+<li>test –x File　　文件存在并且可执行</li>
+</ul>
+
                 <hr>
                 
 								<!-- 多说 Share start -->
                 <div class="ds-share"
                      style="text-align: right"
-                     data-thread-key="2017/03/03/asd/"
-                     data-title="asd"
-                     data-url="http://wnfg.github.io/2017/03/03/asd/"
+                     data-thread-key="2017/03/04/test_study/"
+                     data-title="使用test命令的测试功能"
+                     data-url="http://wnfg.github.io/2017/03/04/test_study/"
                      data-images=""
-                     data-content=" | Wfang&#39;s blog ">
-										<p> cvkcvn </p>
+                     data-content="###test语法结构test condition 待测对象示例：test -e filena... | Wfang&#39;s blog ">
                     <div class="ds-share-inline">
                         <ul class="ds-share-icons-16">
                             <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
@@ -202,11 +260,11 @@
 
                 <ul class="pager">
                     
-                    <li class="previous">
-                        <a href="/2017/03/04/BigFish/" data-toggle="tooltip" data-placement="top"
-                           title="逍遥游">&larr; Previous Post</a>
-                    </li>
                     
+                    <li class="next">
+                        <a href="/2017/03/04/BigFish/" data-toggle="tooltip" data-placement="top"
+                           title="逍遥游">Next Post &rarr;</a>
+                    </li>
                     
                 </ul>
 
@@ -214,9 +272,9 @@
                 <!-- 多说评论框 start -->
                 <div class="comment">
                     <div class="ds-thread"
-                         data-thread-key="2017/03/03/asd/"
-                         data-title="asd"
-                         data-url="http://wnfg.github.io/2017/03/03/asd/">
+                         data-thread-key="2017/03/04/test_study/"
+                         data-title="使用test命令的测试功能"
+                         data-url="http://wnfg.github.io/2017/03/04/test_study/">
                     </div>
                 </div>
                 <!-- 多说评论框 end -->
@@ -249,6 +307,9 @@
                         <a href="/tags/">FEATURED TAGS</a>
                     </h5>
                     <div class="tags">
+                        
+                        <a class="tag" href="/tags/#bash"
+                           title="bash">bash</a>
                         
                     </div>
                 </section>
