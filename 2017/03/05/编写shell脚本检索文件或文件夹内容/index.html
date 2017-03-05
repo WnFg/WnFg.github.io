@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        使用test命令的测试功能｜Wfang&#39;s blog
+        编写shell脚本检索文件或文件夹内容｜Wfang&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://wnfg.github.io/2017/03/04/test_study/">
+    <link rel="canonical" href="http://wnfg.github.io/2017/03/05/编写shell脚本检索文件或文件夹内容/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -145,18 +145,23 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>使用test命令的测试功能</h1>
+                    <h1>编写shell脚本检索文件或文件夹内容</h1>
+                    
+                    <h2 class="subheading">shell脚本学习</h2>
                     
                     <span class="meta">
                          作者 Wfang
                         <span>
-                          日期 2017-03-04
+                          日期 2017-03-05
                          </span>
                     </span>
                     <div class="tags text-center">
                         
                         <a class="tag" href="/tags/#bash"
                            title="bash">bash</a>
+                        
+                        <a class="tag" href="/tags/#shellScript"
+                           title="shellScript">shellScript</a>
                         
                     </div>
                 </div>
@@ -165,7 +170,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            使用test命令的测试功能
+            编写shell脚本检索文件或文件夹内容
         </span>
     </div>
 </header>
@@ -176,67 +181,21 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <h2 id="0-test语法结构"><a href="#0-test语法结构" class="headerlink" title="0.test语法结构"></a>0.test语法结构</h2><blockquote>
-<p>test condition 待测对象<br>示例：test -e filename   测试文件名是否存在  </p>
-</blockquote>
-<p>　test等价于”[ expression ]”，后者常用于if…else语句  </p>
-<p>　<strong>test可理解的表达式类型分为四类：</strong><br>　- 表达式判断<br>　- 字符串比较<br>　- 数字比较<br>　- 文件比较</p>
-<h2 id="1-判断表达式"><a href="#1-判断表达式" class="headerlink" title="1.判断表达式"></a>1.判断表达式</h2><ul>
-<li>if test  (表达式为真)</li>
-<li>if test !表达式为假</li>
-<li>test 表达式1 –a 表达式2　　两个表达式都为真</li>
-<li>test 表达式1 –o 表达式2　　两个表达式有一个为真</li>
-</ul>
-<h2 id="2-判断字符串"><a href="#2-判断字符串" class="headerlink" title="2.判断字符串"></a>2.判断字符串</h2><ul>
-<li>test –n 字符串　　　字符串的长度非零 </li>
-<li>test –z 字符串　　　字符串的长度为零</li>
-<li>test 字符串1 ＝ 字符串2　　字符串相等</li>
-<li>test 字符串1 !＝ 字符串2　　字符串不等</li>
-</ul>
-<h2 id="3-判断整数"><a href="#3-判断整数" class="headerlink" title="3.判断整数"></a>3.判断整数</h2><ul>
-<li>test 整数1 –eq 整数2　　整数相等</li>
-<li>test 整数1 –ge 整数2　　整数1大于等于整数2</li>
-<li>test 整数1 –gt 整数2　　整数1大于整数2</li>
-<li>test 整数1 –le 整数2　　整数1小于等于整数2</li>
-<li>test 整数1 –lt 整数2　　整数1小于整数2</li>
-<li>test 整数1 –ne 整数2　　整数1不等于整数2</li>
-</ul>
-<h2 id="4-判断文件"><a href="#4-判断文件" class="headerlink" title="4.判断文件"></a>4.判断文件</h2><ul>
-<li>test  File1 –ef  File2　　两个文件具有同样的设备号和i结点号</li>
-<li>test  File1 –nt  File2　　文件1比文件2 新</li>
-<li>test  File1 –ot  File2　　文件1比文件2 旧</li>
-<li>test –b File　　文件存在并且是块设备文件</li>
-<li>test –c File　　文件存在并且是字符设备文件</li>
-<li>test –d File　　文件存在并且是目录</li>
-<li>test –e File　　文件存在</li>
-<li>test –f File　　文件存在并且是正规文件</li>
-<li>test –g File　　文件存在并且是设置了组ID</li>
-<li>test –G File　　文件存在并且属于有效组ID</li>
-<li>test –h File　　文件存在并且是一个符号链接（同-L）</li>
-<li>test –k File　　文件存在并且设置了sticky位</li>
-<li>test –b File　　文件存在并且是块设备文件</li>
-<li>test –L File　　文件存在并且是一个符号链接（同-h）</li>
-<li>test –o File　　文件存在并且属于有效用户ID</li>
-<li>test –p File　　文件存在并且是一个命名管道</li>
-<li>test –r File　　文件存在并且可读</li>
-<li>test –s File　　文件存在并且是一个套接字</li>
-<li>test –t FD　　　文件描述符是在一个终端打开的</li>
-<li>test –u File　　文件存在并且设置了它的set-user-id位</li>
-<li>test –w File　　文件存在并且可写</li>
-<li>test –x File　　文件存在并且可执行</li>
-</ul>
+                <h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">sh srh.sh <span class="string">"正则表达式"</span> <span class="string">"filename"</span>  <span class="comment">#假定脚本名为srh.sh</span></div></pre></td></tr></table></figure>
+<p>可将脚本作为可执行文件放入bin中，使用更方便</p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"></div><div class="line">filename=<span class="variable">$2</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ <span class="variable">$#</span> != 2 ]</div><div class="line"><span class="keyword">then</span></div><div class="line">	<span class="built_in">echo</span> <span class="string">'需要2两个参数'</span></div><div class="line">	<span class="built_in">exit</span> -1</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="function"><span class="title">searchKey</span></span>()</div><div class="line">&#123;</div><div class="line">	ttt=$(cat <span class="variable">$2</span> | grep -n <span class="string">"<span class="variable">$1</span>"</span>)</div><div class="line">	<span class="keyword">if</span> [ <span class="string">"<span class="variable">$ttt</span>"</span> != <span class="string">""</span> ] </div><div class="line">	<span class="keyword">then</span></div><div class="line">		<span class="built_in">echo</span> <span class="string">"<span class="variable">$1</span>:"</span></div><div class="line">		<span class="built_in">echo</span> <span class="variable">$ttt</span></div><div class="line">	<span class="keyword">fi</span></div><div class="line">	<span class="built_in">return</span> 0</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">if</span> [ <span class="_">-f</span> <span class="variable">$filename</span> ]</div><div class="line"><span class="keyword">then</span></div><div class="line">	searchKey <span class="string">"<span class="variable">$1</span>"</span> <span class="string">"<span class="variable">$filename</span>"</span></div><div class="line">	<span class="built_in">exit</span> 0</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> $(ls <span class="_">-a</span> <span class="string">"<span class="variable">$filename</span>"</span>)</div><div class="line"><span class="keyword">do</span></div><div class="line">	<span class="keyword">if</span> [ <span class="variable">$i</span> = <span class="string">"."</span> -o <span class="variable">$i</span> = <span class="string">".."</span> ]</div><div class="line">	<span class="keyword">then</span></div><div class="line">		<span class="built_in">continue</span></div><div class="line">	<span class="keyword">fi</span></div><div class="line">	</div><div class="line">	i=<span class="string">"<span class="variable">$filename</span>/<span class="variable">$i</span>"</span></div><div class="line">	<span class="keyword">if</span> [ <span class="_">-d</span> <span class="variable">$i</span> ]     <span class="comment">#若是文件夹，则递归执行shell脚本</span></div><div class="line">	<span class="keyword">then</span></div><div class="line">		srh <span class="string">"<span class="variable">$1</span>"</span> <span class="string">"<span class="variable">$i</span>"</span>     <span class="comment">#srh为shell脚本名，这里是将shell脚本放入bin里，名字为srh</span></div><div class="line">	<span class="keyword">else</span></div><div class="line">		searchKey <span class="string">"<span class="variable">$1</span>"</span> <span class="string">"<span class="variable">$i</span>"</span></div><div class="line">	<span class="keyword">fi</span></div><div class="line"><span class="comment">#	echo "$i"</span></div><div class="line"><span class="keyword">done</span></div><div class="line"></div><div class="line"><span class="built_in">exit</span> 0</div></pre></td></tr></table></figure>
 
                 <hr>
                 
 								<!-- 多说 Share start -->
                 <div class="ds-share"
                      style="text-align: right"
-                     data-thread-key="2017/03/04/test_study/"
-                     data-title="使用test命令的测试功能"
-                     data-url="http://wnfg.github.io/2017/03/04/test_study/"
+                     data-thread-key="2017/03/05/编写shell脚本检索文件或文件夹内容/"
+                     data-title="编写shell脚本检索文件或文件夹内容"
+                     data-url="http://wnfg.github.io/2017/03/05/编写shell脚本检索文件或文件夹内容/"
                      data-images=""
-                     data-content="0.test语法结构
-test condition 待测对象示例：test -e filena... | Wfang&#39;s blog ">
+                     data-content="用法sh srh.sh "正则表达式" "filename"  #假定脚本名为srh.sh
+可... | Wfang&#39;s blog ">
                     <div class="ds-share-inline">
                         <ul class="ds-share-icons-16">
                             <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
@@ -254,15 +213,10 @@ test condition 待测对象示例：test -e filena... | Wfang&#39;s blog ">
 
                 <ul class="pager">
                     
-                    <li class="previous">
-                        <a href="/2017/03/05/编写shell脚本检索文件或文件夹内容/" data-toggle="tooltip" data-placement="top"
-                           title="编写shell脚本检索文件或文件夹内容">&larr; Previous Post</a>
-                    </li>
-                    
                     
                     <li class="next">
-                        <a href="/2017/03/04/BigFish/" data-toggle="tooltip" data-placement="top"
-                           title="逍遥游">Next Post &rarr;</a>
+                        <a href="/2017/03/04/test_study/" data-toggle="tooltip" data-placement="top"
+                           title="使用test命令的测试功能">Next Post &rarr;</a>
                     </li>
                     
                 </ul>
@@ -271,9 +225,9 @@ test condition 待测对象示例：test -e filena... | Wfang&#39;s blog ">
                 <!-- 多说评论框 start -->
                 <div class="comment">
                     <div class="ds-thread"
-                         data-thread-key="2017/03/04/test_study/"
-                         data-title="使用test命令的测试功能"
-                         data-url="http://wnfg.github.io/2017/03/04/test_study/">
+                         data-thread-key="2017/03/05/编写shell脚本检索文件或文件夹内容/"
+                         data-title="编写shell脚本检索文件或文件夹内容"
+                         data-url="http://wnfg.github.io/2017/03/05/编写shell脚本检索文件或文件夹内容/">
                     </div>
                 </div>
                 <!-- 多说评论框 end -->
@@ -285,7 +239,7 @@ test condition 待测对象示例：test -e filena... | Wfang&#39;s blog ">
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0-test语法结构"><span class="toc-text">0.test语法结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-判断表达式"><span class="toc-text">1.判断表达式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-判断字符串"><span class="toc-text">2.判断字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-判断整数"><span class="toc-text">3.判断整数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-判断文件"><span class="toc-text">4.判断文件</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#用法"><span class="toc-text">用法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Code"><span class="toc-text">Code</span></a></li></ol>
                 </div>
             </div>
         </div>
@@ -309,6 +263,9 @@ test condition 待测对象示例：test -e filena... | Wfang&#39;s blog ">
                         
                         <a class="tag" href="/tags/#bash"
                            title="bash">bash</a>
+                        
+                        <a class="tag" href="/tags/#shellScript"
+                           title="shellScript">shellScript</a>
                         
                     </div>
                 </section>

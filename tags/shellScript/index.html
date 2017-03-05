@@ -22,7 +22,7 @@
         
     </title>
 
-    <link rel="canonical" href="http://wnfg.github.io/tags/杂谈/">
+    <link rel="canonical" href="http://wnfg.github.io/tags/shellScript/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -150,20 +150,25 @@
             <!-- Main Content -->
 
 
-<div class="post-preview  post-preview-poetry"
+<div class="post-preview  "
      style="background-image: url('http://oco8bvfr8.qnssl.com/16-8-new-bg.jpg')">
-    <a href="/2017/03/04/BigFish/">
+    <a href="/2017/03/05/编写shell脚本检索文件或文件夹内容/">
         <h2 class="post-title">
-            逍遥游
+            编写shell脚本检索文件或文件夹内容
         </h2>
         <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2017-03-04
+            <i class="fa fa-calendar" aria-hidden="true"></i> 2017-03-05
         </p>
+        
+        <h3 class="post-subtitle">
+            shell脚本学习
+        </h3>
         
         <div class="post-content-preview">
             <p>
-                北冥有鱼，其名为鲲。鲲之大，不知其几千里也；化而为鸟，其名为鹏。鹏之背，不知其几千里也；怒而飞，其翼若垂天之云。
-
+                用法sh srh.sh "正则表达式" "filename"  #假定脚本名为srh.sh
+可将脚本作为可执行文件放入bin中，使用更方便
+Code#!/bin/bashfilename=$2if [ $# != 2 ]then	echo '需要2两个参数'	exit -1fisearchKey..
             </p>
         </div>
     </a>
