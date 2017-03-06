@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        编写shell脚本检索文件或文件夹内容｜Wfang&#39;s blog
+        shell命令执行顺序｜Wfang&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://wnfg.github.io/2017/03/05/编写shell脚本检索文件或文件夹内容/">
+    <link rel="canonical" href="http://wnfg.github.io/2017/03/06/shell命令执行顺序/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -145,23 +145,23 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>编写shell脚本检索文件或文件夹内容</h1>
+                    <h1>shell命令执行顺序</h1>
                     
                     <h2 class="subheading">shell脚本学习</h2>
                     
                     <span class="meta">
                          作者 Wfang
                         <span>
-                          日期 2017-03-05
+                          日期 2017-03-06
                          </span>
                     </span>
                     <div class="tags text-center">
                         
+                        <a class="tag" href="/tags/#Bash"
+                           title="Bash">Bash</a>
+                        
                         <a class="tag" href="/tags/#shellScript"
                            title="shellScript">shellScript</a>
-                        
-                        <a class="tag" href="/tags/#bash"
-                           title="bash">bash</a>
                         
                     </div>
                 </div>
@@ -170,7 +170,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            编写shell脚本检索文件或文件夹内容
+            shell命令执行顺序
         </span>
     </div>
 </header>
@@ -181,21 +181,68 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">sh srh.sh <span class="string">"正则表达式"</span> <span class="string">"filename"</span>  <span class="comment">#假定脚本名为srh.sh</span></div></pre></td></tr></table></figure>
-<p>可将脚本作为可执行文件放入bin中，使用更方便</p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"></div><div class="line">filename=<span class="variable">$2</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ <span class="variable">$#</span> != 2 ]</div><div class="line"><span class="keyword">then</span></div><div class="line">	<span class="built_in">echo</span> <span class="string">'需要2两个参数'</span></div><div class="line">	<span class="built_in">exit</span> -1</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="function"><span class="title">searchKey</span></span>()</div><div class="line">&#123;</div><div class="line">	ttt=$(cat <span class="variable">$2</span> | grep -n <span class="string">"<span class="variable">$1</span>"</span>)</div><div class="line">	<span class="keyword">if</span> [ <span class="string">"<span class="variable">$ttt</span>"</span> != <span class="string">""</span> ] </div><div class="line">	<span class="keyword">then</span></div><div class="line">		<span class="built_in">echo</span> <span class="string">"<span class="variable">$1</span>:"</span></div><div class="line">		<span class="built_in">echo</span> <span class="variable">$ttt</span></div><div class="line">	<span class="keyword">fi</span></div><div class="line">	<span class="built_in">return</span> 0</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">if</span> [ <span class="_">-f</span> <span class="variable">$filename</span> ]</div><div class="line"><span class="keyword">then</span></div><div class="line">	searchKey <span class="string">"<span class="variable">$1</span>"</span> <span class="string">"<span class="variable">$filename</span>"</span></div><div class="line">	<span class="built_in">exit</span> 0</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> $(ls <span class="_">-a</span> <span class="string">"<span class="variable">$filename</span>"</span>)</div><div class="line"><span class="keyword">do</span></div><div class="line">	<span class="keyword">if</span> [ <span class="variable">$i</span> = <span class="string">"."</span> -o <span class="variable">$i</span> = <span class="string">".."</span> ]</div><div class="line">	<span class="keyword">then</span></div><div class="line">		<span class="built_in">continue</span></div><div class="line">	<span class="keyword">fi</span></div><div class="line">	</div><div class="line">	i=<span class="string">"<span class="variable">$filename</span>/<span class="variable">$i</span>"</span></div><div class="line">	<span class="keyword">if</span> [ <span class="_">-d</span> <span class="variable">$i</span> ]     <span class="comment">#若是文件夹，则递归执行shell脚本</span></div><div class="line">	<span class="keyword">then</span></div><div class="line">		srh <span class="string">"<span class="variable">$1</span>"</span> <span class="string">"<span class="variable">$i</span>"</span>     <span class="comment">#srh为shell脚本名，这里是将shell脚本放入bin里，名字为srh</span></div><div class="line">	<span class="keyword">else</span></div><div class="line">		searchKey <span class="string">"<span class="variable">$1</span>"</span> <span class="string">"<span class="variable">$i</span>"</span></div><div class="line">	<span class="keyword">fi</span></div><div class="line"><span class="comment">#	echo "$i"</span></div><div class="line"><span class="keyword">done</span></div><div class="line"></div><div class="line"><span class="built_in">exit</span> 0</div></pre></td></tr></table></figure>
+                <h2 id="shell命令执行顺序"><a href="#shell命令执行顺序" class="headerlink" title="shell命令执行顺序"></a>shell命令执行顺序</h2><blockquote>
+<p><em>以下内容摘抄自&lt;<shell脚本学习指南>&gt;(\&lt;\<classic shell="" scripting="">&gt;)</classic></shell脚本学习指南></em><br>Each line that the shell reads from the standard input or a script is called a pipeline; it contains one or more commands separated by zero or more pipe characters (|)(Actually,several special symbols separate individual commands: semicolon, ;,pipe,|,ampersand, &amp;,logical AND, &amp;&amp;,and logical OR, ||.) For each pipeline it reads,the shell breaks it up into commands,sets up the I/O for the pipeline,and then does the following for each command, in the order shown:</p>
+<ol>
+<li><p>Splits the command into tokens that are separated by the fixed set of metacharacters: space,tab,newline, ;, (, ), &lt;, &gt;, |,and &amp;. Types of tokens include words,<br>keywords, I/O redirectors, and semicolons.<br>It’s a subtle point,but variable,command,and arithmetic substitution can be<br>performed while the shell is doing token recognition. This is why the vi ~$user/<br>.profile example presented earlier in “Tilde Expansion” [7.5.1],actually works<br>as expected.</p>
+</li>
+<li><p>Checks the first token of each command to see if it is a keyword with no quotes<br>or backslashes. If it’s an opening keyword (if and other control-structure openers, {,or (),then the command is actually a compound command. The shell sets<br>things up internally for the compound command,reads the next command,and<br>starts the process again. If the keyword isn’t a compound command opener (e.g.,<br>is a control-structure middle like then, else,or do,an end like fi or done,or a<br>logical operator), the shell signals a syntax error.</p>
+</li>
+<li><p>Checks the first word of each command against the list of aliases. If a match is<br>found,it substitutes the alias’s definition and goes back to step 1; otherwise it<br>goes on to step 4. (Aliases are intended for interactive shells. As such,we haven’t<br>covered them here.) The return to step 1 allows aliases for keywords to be<br>defined: e.g., alias aslongas=while or alias procedure=function. Note that the<br>shell does not do recursive alias expansion: instead,it recognizes when an alias<br>expands to the same command,and stops the potential recursion. Alias expansion can be inhibited by quoting any part of the word to be protected.</p>
+</li>
+<li><p>Substitutes the user’s home directory ($HOME) for the tilde character (~) if it is at<br>the beginning of a word. Substitutes user’s home directory for ~user.<br>Tilde substitution (in shells that support it) occurs at the following places:<br>• As the first unquoted character of a word on the command line<br>• After the = in a variable assignment and after any : in the value of a variable<br>assignment<br>• For the word part of variable substitutions of the form ${variable op word}</p>
+</li>
+<li><p>Performs parameter (variable) substitution for any expression that starts with a<br>dollar sign ($).</p>
+</li>
+<li><p>Does command substitution for any expression of the form $(string) or <code>string</code>.</p>
+</li>
+<li><p>Evaluates arithmetic expressions of the form $((string)).</p>
+</li>
+<li><p>Takes the parts of the line that resulted from parameter,command,and arithmetic substitution and splits them into words again. This time it uses the characters in $IFS as delimiters instead of the set of metacharacters in step 1.<br>Normally,successive multiple input occurrences of characters in IFS act as a single delimiter,which is what you would expect. This is true only for whitespacecharacters,such as space and tab. For nonwhitespace characters,this is not true.For example,when reading the colon-separated fields of /etc/passwd,two successive colons delimit an empty field:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">&gt;            <span class="keyword">while</span> IFS=: <span class="built_in">read</span> name passwd uid gid fullname homedir shell</div><div class="line">&gt;            <span class="keyword">do</span></div><div class="line">&gt;            ...</div><div class="line">&gt;   	   <span class="keyword">done</span> &lt; /etc/passwd</div><div class="line">&gt;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ol>
+<li><p>Performs filename generation,a.k.a. wildcard expansion,for any occurrences of *,<br>?, and […] pairs.</p>
+</li>
+<li><p>Uses the first word as a command following the search order described later in<br>“Built-in Commands” [7.9]; i.e.,as a special built-in command,then as a function,then as a regular built-in command,and finally as the first file found in a<br>search of $PATH.</p>
+</li>
+<li><p>Runs the command after setting up I/O redirection and other such things.</p>
+</li>
+</ol>
+<p><img src="http://om7vsi674.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20170306214032.png" alt="示意图"><br>　　　　　　　　　　　　　　　　　Figure 7-1. Steps in command-line processing</p>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">&gt;$ mkdir /tmp/x Create temporary directory</div><div class="line">&gt;$ <span class="built_in">cd</span> /tmp/x Change there</div><div class="line">&gt;$ touch f1 f2 Create files <span class="keyword">for</span> wildcarding</div><div class="line">&gt;$ f=f y=<span class="string">"a b"</span> Assign two variables</div><div class="line">&gt;$ <span class="built_in">echo</span> ~+/<span class="variable">$&#123;f&#125;</span>[12] <span class="variable">$y</span> $(<span class="built_in">echo</span> cmd subst) $((3 + 2)) &gt; out A busy <span class="built_in">command</span></div><div class="line">&gt;</div></pre></td></tr></table></figure>
+<ol>
+<li>命令一开始会根据Shell语法而分割为token。最重要的一点是：I/O重定向&gt;out在这一步中被识别的，并会被延后使用。进程会继续处理这行命令，命令分割如下：<br>echo ~+/${f}[12] $y $(echo cmd subst) $((3 + 2))<br>| 1 | 　|— 2 —|　 3 　|—— 4 ——|　　　|– 5 –|</li>
+<li>检查第一个token是否为关键字。本例中不是，进程继续执行。</li>
+<li>检查第一个token是否有别名(alias)。本例中不是，进程继续执行。</li>
+<li>所有单词执行波浪线替换，~+等效于$PWD——当前目录。token 2被修改，进程继续执行。</li>
+<li>变量替换。token 2,3被修改。结果如下：<br>echo /tmp/x/f[12] a b $(echo cmd subst) $((3 + 2))<br>| 1 | 　|—- 2 —|　|-3-| |—— 4 ——| 　　|– 5 —|</li>
+<li>命令替换。修改token 5，注意命令替换$()是可以递归执行的。这里只有一层没有递归，结果是：<br>echo /tmp/x/f[12] a b cmd subst $((3 + 2))<br>| 1 |　|—- 2 —|　|-3-| |– 4 ——| |— 5 —|</li>
+<li>算数表达式替换。token 5被修改。结果：<br>echo /tmp/x/f[12] a b cmd subst 5<br>| 1 |　|—- 2 —|　|-3-| |– 4 ——| 5</li>
+<li>前面被替换后的内容重新被扫描并被$IFS(分隔符)分割，生成新的token。例如7中的结果分割如下：<br>echo /tmp/x/f[12] a b cmd subst 5<br>| 1 |　|—- 2 —-|　3 4 |-5-| |–6–| 7</li>
+<li>通配符替换。token 2被修改为:<br>echo /tmp/x/f1 /tmp/x/f2 a b cmd subst 5<br>| 1 |　|– 2 –|　|– 3 –|　4 5　6　　7　8</li>
+<li>shell准备执行替换后的命令内容。它会查询echo是内建命令或是外部命令。</li>
+<li>首先，执行&gt;out I/O重定向。随后，执行内建命令echo。</li>
+<li>命令执行结束，会将文件描述符(0,1,2)重新归位。(通过实验得到的个人理解。)<br>以上的最终结果为:<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">&gt;$ cat out</div><div class="line">&gt;/tmp/x/f1 /tmp/x/f2 a b cmd subst 5</div><div class="line">&gt;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+</blockquote>
 
                 <hr>
                 
 								<!-- 多说 Share start -->
                 <div class="ds-share"
                      style="text-align: right"
-                     data-thread-key="2017/03/05/编写shell脚本检索文件或文件夹内容/"
-                     data-title="编写shell脚本检索文件或文件夹内容"
-                     data-url="http://wnfg.github.io/2017/03/05/编写shell脚本检索文件或文件夹内容/"
+                     data-thread-key="2017/03/06/shell命令执行顺序/"
+                     data-title="shell命令执行顺序"
+                     data-url="http://wnfg.github.io/2017/03/06/shell命令执行顺序/"
                      data-images=""
-                     data-content="用法sh srh.sh "正则表达式" "filename"  #假定脚本名为srh.sh
-可... | Wfang&#39;s blog ">
+                     data-content="shell命令执行顺序
+以下内容摘抄自&lt;&gt;(\&lt;\&gt;)Each lin... | Wfang&#39;s blog ">
                     <div class="ds-share-inline">
                         <ul class="ds-share-icons-16">
                             <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
@@ -213,15 +260,10 @@
 
                 <ul class="pager">
                     
-                    <li class="previous">
-                        <a href="/2017/03/06/shell命令执行顺序/" data-toggle="tooltip" data-placement="top"
-                           title="shell命令执行顺序">&larr; Previous Post</a>
-                    </li>
-                    
                     
                     <li class="next">
-                        <a href="/2017/03/04/test_study/" data-toggle="tooltip" data-placement="top"
-                           title="使用test命令的测试功能">Next Post &rarr;</a>
+                        <a href="/2017/03/05/编写shell脚本检索文件或文件夹内容/" data-toggle="tooltip" data-placement="top"
+                           title="编写shell脚本检索文件或文件夹内容">Next Post &rarr;</a>
                     </li>
                     
                 </ul>
@@ -230,9 +272,9 @@
                 <!-- 多说评论框 start -->
                 <div class="comment">
                     <div class="ds-thread"
-                         data-thread-key="2017/03/05/编写shell脚本检索文件或文件夹内容/"
-                         data-title="编写shell脚本检索文件或文件夹内容"
-                         data-url="http://wnfg.github.io/2017/03/05/编写shell脚本检索文件或文件夹内容/">
+                         data-thread-key="2017/03/06/shell命令执行顺序/"
+                         data-title="shell命令执行顺序"
+                         data-url="http://wnfg.github.io/2017/03/06/shell命令执行顺序/">
                     </div>
                 </div>
                 <!-- 多说评论框 end -->
@@ -244,7 +286,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#用法"><span class="toc-text">用法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Code"><span class="toc-text">Code</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#shell命令执行顺序"><span class="toc-text">shell命令执行顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#示例"><span class="toc-text">示例</span></a></li></ol>
                 </div>
             </div>
         </div>
@@ -266,11 +308,11 @@
                     </h5>
                     <div class="tags">
                         
+                        <a class="tag" href="/tags/#Bash"
+                           title="Bash">Bash</a>
+                        
                         <a class="tag" href="/tags/#shellScript"
                            title="shellScript">shellScript</a>
-                        
-                        <a class="tag" href="/tags/#bash"
-                           title="bash">bash</a>
                         
                     </div>
                 </section>
