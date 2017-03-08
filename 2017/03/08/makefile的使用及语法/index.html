@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        shell命令执行顺序｜Wfang&#39;s blog
+        Makefile的使用及语法｜Wfang&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://wnfg.github.io/2017/03/06/shell命令执行顺序/">
+    <link rel="canonical" href="http://wnfg.github.io/2017/03/08/makefile的使用及语法/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -145,23 +145,18 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>shell命令执行顺序</h1>
-                    
-                    <h2 class="subheading">shell脚本学习</h2>
+                    <h1>Makefile的使用及语法</h1>
                     
                     <span class="meta">
                          作者 Wfang
                         <span>
-                          日期 2017-03-06
+                          日期 2017-03-08
                          </span>
                     </span>
                     <div class="tags text-center">
                         
-                        <a class="tag" href="/tags/#Bash"
-                           title="Bash">Bash</a>
-                        
-                        <a class="tag" href="/tags/#shellScript"
-                           title="shellScript">shellScript</a>
+                        <a class="tag" href="/tags/#make"
+                           title="make">make</a>
                         
                     </div>
                 </div>
@@ -170,7 +165,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            shell命令执行顺序
+            Makefile的使用及语法
         </span>
     </div>
 </header>
@@ -181,41 +176,31 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <h2 id="shell命令执行顺序"><a href="#shell命令执行顺序" class="headerlink" title="shell命令执行顺序"></a>shell命令执行顺序</h2><blockquote>
-<p><em>以下内容摘抄自<strong>shell脚本学习指南</strong></em></p>
-<p><img src="http://om7vsi674.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20170306214032.png" alt="示意图"><br>　　　　　　　　　　　　　　　　　Figure 7-1. Steps in command-line processing</p>
+                <h2 id="makefile作用"><a href="#makefile作用" class="headerlink" title="makefile作用"></a>makefile作用</h2><p>每项有关软件开发的技术的诞生往往是为了解决项目开发中的一些技术痛点。而make解决的问题是当一个项目较大时，源文件之间的依赖关系将变得非常复杂。因此，自动化的编译技术将为开发带来许多便利。</p>
+<h2 id="makefile语法（粗略版）"><a href="#makefile语法（粗略版）" class="headerlink" title="makefile语法（粗略版）"></a>makefile语法（粗略版）</h2><h3 id="规则的语法结构"><a href="#规则的语法结构" class="headerlink" title="规则的语法结构"></a>规则的语法结构</h3><figure class="highlight makefile"><table><tr><td class="code"><pre><div class="line">target...: prerequisites...</div><div class="line">	command</div></pre></td></tr></table></figure>
+<p>target…是要生成的目标文件集合<br>prerequisites…是依赖文件集合<br>command是命令集合，命令行前需要一个tab</p>
+<h3 id="运行说明"><a href="#运行说明" class="headerlink" title="运行说明"></a>运行说明</h3><blockquote>
+<p>工作步骤<br>1.读入所有的Makefile。<br>2.读入被include的其它Makefile。<br>3.初始化文件中的变量。<br>4.推导隐晦规则，并分析所有规则。<br>5.为所有的目标文件创建依赖关系链。<br>6.根据依赖关系，决定哪些目标要重新生成。<br>7.执行生成命令。</p>
 </blockquote>
-<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">$ mkdir /tmp/x　　<span class="comment">#Create temporary directory</span></div><div class="line">$ <span class="built_in">cd</span> /tmp/x 　　　<span class="comment">#Change there</span></div><div class="line">$ touch f1 f2 　　<span class="comment">#Create files for wildcarding</span></div><div class="line">$ f=f y=<span class="string">"a b"</span> 　　<span class="comment">#Assign two variables</span></div><div class="line">$ <span class="built_in">echo</span> ~+/<span class="variable">$&#123;f&#125;</span>[12] <span class="variable">$y</span> $(<span class="built_in">echo</span> cmd subst) $((3 + 2)) &gt; out　<span class="comment">#A busy command</span></div></pre></td></tr></table></figure>
-<ol>
-<li>命令一开始会根据Shell语法而分割为token。最重要的一点是：I/O重定向&gt;out在这一步中被识别的，并会被延后使用。进程会继续处理这行命令，命令分割如下：<br>echo ~+/${f}[12] $y $(echo cmd subst) $((3 + 2))<br>| 1 | 　|— 2 —|　 3 　|—— 4 ——|　　　|– 5 –|</li>
-<li>检查第一个token是否为关键字。本例中不是，进程继续执行。</li>
-<li>检查第一个token是否有别名(alias)。本例中不是，进程继续执行。</li>
-<li>所有单词执行波浪线替换，~+等效于$PWD——当前目录。token 2被修改，进程继续执行。</li>
-<li>变量替换。token 2,3被修改。结果如下：<br>echo /tmp/x/f[12] a b $(echo cmd subst) $((3 + 2))<br>| 1 | 　|—- 2 —|　|-3-| |—— 4 ——| 　　|– 5 —|</li>
-<li>命令替换。修改token 5，注意命令替换$()是可以递归执行的。这里只有一层没有递归，结果是：<br>echo /tmp/x/f[12] a b cmd subst $((3 + 2))<br>| 1 |　|—- 2 —|　|-3-| |– 4 ——| |— 5 —|</li>
-<li>算数表达式替换。token 5被修改。结果：<br>echo /tmp/x/f[12] a b cmd subst 5<br>| 1 |　|—- 2 —|　|-3-| |– 4 ——| 5</li>
-<li>前面被替换后的内容重新被扫描并被$IFS(分隔符)分割，生成新的token。例如7中的结果分割如下：<br>echo /tmp/x/f[12] a b cmd subst 5<br>| 1 |　|—- 2 —-|　3 4 |-5-| |–6–| 7</li>
-<li>通配符替换。token 2被修改为:<br>echo /tmp/x/f1 /tmp/x/f2 a b cmd subst 5<br>| 1 |　|– 2 –|　|– 3 –|　4 5　6　　7　8</li>
-<li>shell准备执行替换后的命令内容。它会查询echo是内建命令或是外部命令。</li>
-<li>首先，执行&gt;out I/O重定向。随后，执行内建命令echo。</li>
-<li>命令执行结束，会将文件描述符(0,1,2)重新归位。(通过实验得到的个人理解。)<br>以上的最终结果为:<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">$ cat out</div><div class="line">/tmp/x/f1 /tmp/x/f2 a b cmd subst 5</div></pre></td></tr></table></figure>
-</li>
-</ol>
-</blockquote>
+<p>当至少有一个依赖文件比目标文件新时(或目标文件不存在)，command才会被执行。<br>执行makefile时，可以使用’make’命令。<br>简单的’make’将把第一个规则的第一个目标文件作为最终目标文件生成(当这个目标文件不存在或不是最新时，否则按此理向下寻找)，可以使用’make [目标文件]’详细指定要生成的目标文件。</p>
+<h3 id="include"><a href="#include" class="headerlink" title="include"></a>include</h3><p>与C语言的include类似，可以将另一个makefile文件展开到当前的文件中include的位置。</p>
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><figure class="highlight makefile"><table><tr><td class="code"><pre><div class="line">a = str           #赋值</div><div class="line">$(a) 或 $&#123;a&#125;    <span class="comment">#展开变量</span></div><div class="line"></div><div class="line"><span class="comment">#其它类型的赋值</span></div><div class="line">a ?= str      #若a没有被赋值，则赋值str</div><div class="line">a += str      #变量a追加str</div><div class="line"></div><div class="line"><span class="comment"># = 与 := 之间的区别</span></div><div class="line"><span class="comment"># 直接看示例</span></div><div class="line">输入:　　　　　　　　　 输入:</div><div class="line">a = 1                 a = 1</div><div class="line">b = $&#123;a&#125;　            b := $&#123;a&#125;</div><div class="line">a = 2                 a = 2 </div><div class="line">all:                  all:</div><div class="line">　@echo $&#123;b&#125;            @echo $&#123;b&#125;</div><div class="line">输出:                 输出:</div><div class="line">　2                     1</div><div class="line"></div><div class="line">从上面的结果可以看出，=会取右边变量，在makefile完全展开后的最终值。</div><div class="line">而:=则跟一般程序语言中的赋值类似，取值与位置有关。</div></pre></td></tr></table></figure>
+<h3 id="静态模式"><a href="#静态模式" class="headerlink" title="静态模式"></a>静态模式</h3><p>3.7 静态模式<br>静态模式可以更加容易地定义多目标的规则，可以让我们的规则变得更加的有弹性和灵活。我们还是先来看一下语法：<br><figure class="highlight makefile"><table><tr><td class="code"><pre><div class="line">&lt;targets...&gt;: &lt;target-pattern&gt;: &lt;prereq-patterns ...&gt;</div><div class="line">　　　&lt;commands&gt;</div><div class="line">...</div></pre></td></tr></table></figure></p>
+<p>targets定义了一系列的目标文件，可以有通配符。是目标的一个集合。<br>target-parrtern是指明了targets的模式，也就是的目标集模式。<br>prereq-parrterns是目标的依赖模式，它对target-parrtern形成的模式再进行一次依赖目标的定义。<br>这样描述这三个东西，可能还是没有说清楚，还是举个例子来说明一下吧。如果我们的<target-parrtern>定义成“%.o”，意思是我们的集合中都是以“.o”结尾的，而如果我们的<prereq-parrterns>定义成“%.c”，意思是对<target-parrtern>所形成的目标集进行二次定义，其计算方法是，取<target-parrtern>模式中的“%”（也就是去掉了[.o]这个结尾），并为其加上[.c]这个结尾，形成的新集合。<br>所以，我们的“目标模式”或是“依赖模式”中都应该有“%”这个字符，如果你的文件名中有“%”那么你可以使用反斜杠“\”进行转义，来标明真实的“%”字符。<br>看一个例子：<br><figure class="highlight makefile"><table><tr><td class="code"><pre><div class="line">objects = foo.o bar.o</div><div class="line"> </div><div class="line">all: $(objects)</div><div class="line"> </div><div class="line">$(objects): %.o: %.c</div><div class="line">        $(CC) -c $(CFLAGS) $&lt; -o $@</div></pre></td></tr></table></figure></target-parrtern></target-parrtern></prereq-parrterns></target-parrtern></p>
+<p>上面的例子中，指明了我们的目标从$object中获取，“%.o”表明要所有以“.o”结尾的目标，也就是“foo.o bar.o”，也就是变量$object集合的模式，而依赖模式“%.c”则取模式“%.o”的“%”，也就是“foobar”，并为其加下“.c”的后缀，于是，我们的依赖目标就是“foo.c bar.c”。而命令中的“$&lt;”和“$@”则是自动化变量，“$&lt;”表示第一个依赖文件（也就是“foo.c bar.c”），“$@”表示目标集（也就是foo.o bar.o”）。于是，上面的规则展开后等价于下面的规则：<br><figure class="highlight makefile"><table><tr><td class="code"><pre><div class="line">foo.o : foo.c</div><div class="line">        $(CC) -c $(CFLAGS) foo.c -o foo.o</div><div class="line">bar.o : bar.c</div><div class="line">        $(CC) -c $(CFLAGS) bar.c -o bar.o</div></pre></td></tr></table></figure></p>
+<p>试想，如果我们的“%.o”有几百个，那我们只要用这种很简单的“静态模式规则”就可以写完一堆规则，实在是太有效率了。“静态模式规则”的用法很灵活，如果用得好，那会一个很强大的功能。再看一个例子：<br><figure class="highlight makefile"><table><tr><td class="code"><pre><div class="line">files = foo.elc bar.o lose.o</div><div class="line"> </div><div class="line">$(filter %.o,$(files)): %.o: %.c</div><div class="line">        $(CC) -c $(CFLAGS) $&lt; -o $@</div><div class="line">$(filter %.elc,$(files)): %.elc: %.el</div><div class="line">        emacs -f batch-byte-compile $&lt;</div></pre></td></tr></table></figure></p>
+<p><code>$(filter%.o,$(files))</code>表示调用Makefile的filter函数，过滤“$files”集，只要其中模式为“%.o”的内容。其的它内容，我就不用多说了吧。这个例字展示了Makefile中更大的弹性。</p>
 
                 <hr>
                 
 								<!-- 多说 Share start -->
                 <div class="ds-share"
                      style="text-align: right"
-                     data-thread-key="2017/03/06/shell命令执行顺序/"
-                     data-title="shell命令执行顺序"
-                     data-url="http://wnfg.github.io/2017/03/06/shell命令执行顺序/"
+                     data-thread-key="2017/03/08/makefile的使用及语法/"
+                     data-title="Makefile的使用及语法"
+                     data-url="http://wnfg.github.io/2017/03/08/makefile的使用及语法/"
                      data-images=""
-                     data-content="shell命令执行顺序
-以下内容摘抄自shell脚本学习指南
-　　　　　　　　　　　　　　　　... | Wfang&#39;s blog ">
+                     data-content="makefile作用每项有关软件开发的技术的诞生往往是为了解决项目开发中的一些技术痛点。而ma... | Wfang&#39;s blog ">
                     <div class="ds-share-inline">
                         <ul class="ds-share-icons-16">
                             <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
@@ -233,15 +218,10 @@
 
                 <ul class="pager">
                     
-                    <li class="previous">
-                        <a href="/2017/03/08/makefile的使用及语法/" data-toggle="tooltip" data-placement="top"
-                           title="Makefile的使用及语法">&larr; Previous Post</a>
-                    </li>
-                    
                     
                     <li class="next">
-                        <a href="/2017/03/05/编写shell脚本检索文件或文件夹内容/" data-toggle="tooltip" data-placement="top"
-                           title="编写shell脚本检索文件或文件夹内容">Next Post &rarr;</a>
+                        <a href="/2017/03/06/shell命令执行顺序/" data-toggle="tooltip" data-placement="top"
+                           title="shell命令执行顺序">Next Post &rarr;</a>
                     </li>
                     
                 </ul>
@@ -250,9 +230,9 @@
                 <!-- 多说评论框 start -->
                 <div class="comment">
                     <div class="ds-thread"
-                         data-thread-key="2017/03/06/shell命令执行顺序/"
-                         data-title="shell命令执行顺序"
-                         data-url="http://wnfg.github.io/2017/03/06/shell命令执行顺序/">
+                         data-thread-key="2017/03/08/makefile的使用及语法/"
+                         data-title="Makefile的使用及语法"
+                         data-url="http://wnfg.github.io/2017/03/08/makefile的使用及语法/">
                     </div>
                 </div>
                 <!-- 多说评论框 end -->
@@ -264,7 +244,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#shell命令执行顺序"><span class="toc-text">shell命令执行顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#示例"><span class="toc-text">示例</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#makefile作用"><span class="toc-text">makefile作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#makefile语法（粗略版）"><span class="toc-text">makefile语法（粗略版）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#规则的语法结构"><span class="toc-text">规则的语法结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行说明"><span class="toc-text">运行说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#include"><span class="toc-text">include</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#变量"><span class="toc-text">变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#静态模式"><span class="toc-text">静态模式</span></a></li></ol></li></ol>
                 </div>
             </div>
         </div>
@@ -286,11 +266,8 @@
                     </h5>
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/#Bash"
-                           title="Bash">Bash</a>
-                        
-                        <a class="tag" href="/tags/#shellScript"
-                           title="shellScript">shellScript</a>
+                        <a class="tag" href="/tags/#make"
+                           title="make">make</a>
                         
                     </div>
                 </section>
