@@ -13,7 +13,7 @@ tags:
 ---
 
 
-> 下滑这里查看更多内容
+> 下滑这查看更多内容
 
 ### [Watching Fullscreen →](https://huangxuan.me/pwa-in-my-pov/)
 
