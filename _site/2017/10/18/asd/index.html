@@ -10,7 +10,7 @@
     <meta name="keywords"  content="万方, Wfang, linux, c++, python, web">
     <meta name="theme-color" content="#000000">
     
-    <title>Progressive Web App 之我见 - 万方的博客 | Wfang Blog</title>
+    <title>asd - 万方的博客 | Wfang Blog</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -19,7 +19,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="http://wfang.xyz/2016/06/05/pwa-in-my-pov/">
+    <link rel="canonical" href="http://wfang.xyz/2017/10/18/asd/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -160,51 +160,31 @@
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
-        /*background-image: url('/img/home-bg.jpg')*/
-        height: 500px;
-        overflow: hidden;
+        position: relative;
+        background-image: url('/img/home-bg.jpg')
     }
-    header iframe{
-        width: 100%;
-        height: 100%;
-        border: 0;
-    }
-    /* Override Nav Style */
-    
-        .navbar-custom .nav li a,
-        .navbar-custom .nav li a:hover,
-        .navbar-custom .navbar-brand,
-        .navbar-custom .navbar-brand:hover {color:#777;}
-        .navbar-default .navbar-toggle .icon-bar {background-color:#777;}
 
     
 </style>
 <header class="intro-header" >
-    <iframe src="//huangxuan.me/pwa-in-my-pov/"/>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <div class="post-heading">
-                        <div class="tags">
-                            
-                            <a class="tag" href="/tags/#前端开发" title="前端开发">前端开发</a>
-                            
-                            <a class="tag" href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
-                            
-                            <a class="tag" href="/tags/#PWA" title="PWA">PWA</a>
-                            
-                        </div>
-                        <h1>Progressive Web App 之我见</h1>
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
                         
-                        
-                        <h2 class="subheading">Slides: Progressive Web App, in my points of view</h2>
-                        
-                        <span class="meta">Posted by Hux on June 5, 2016</span>
                     </div>
+                    <h1>asd</h1>
+                    
+                    
+                    <h2 class="subheading"></h2>
+                    
+                    <span class="meta">Posted by Wfang on October 18, 2017</span>
                 </div>
             </div>
         </div>
-    </iframe>
+    </div>
 </header>
 
 <!-- Post Content -->
@@ -212,44 +192,33 @@
     <div class="container">
         <div class="row">
 
-            <!-- Post Container -->
-            <div class="post-container
+    <!-- Post Container -->
+            <div class="
                 col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1 ">
+                col-md-10 col-md-offset-1
+                post-container">
 
-				<blockquote>
-  <p>下滑这查看更多内容</p>
-</blockquote>
+                <!-- Multi-Lingual -->
+                
 
-<h3 id="watching-fullscreen-"><a href="https://huangxuan.me/pwa-in-my-pov/">Watching Fullscreen →</a></h3>
+				<h2 id="test">test</h2>
 
-<div class="visible-md visible-lg">
-    <img src="//huangxuan.me/pwa-in-my-pov/attach/qrcode.png" width="350" />
-    <small class="img-hint">Scanning on mobile</small>
-</div>
+<h2 id="一些感想">一些感想</h2>
 
-<h3 id="catalog">Catalog</h3>
+<h3 id="多页应用仍然有很长的路要走">多页应用仍然有很长的路要走</h3>
 
-<ul>
-  <li>WHAT is Progressive Web App?</li>
-  <li>1 - Installability</li>
-  <li>2 - App Shell</li>
-  <li>3 - Offline
-    <ul>
-      <li>SERVICE WORKER!</li>
-    </ul>
-  </li>
-  <li>4 - Re-engageable
-    <ul>
-      <li>Push Notification</li>
-    </ul>
-  </li>
-  <li>CONS in my pov</li>
-  <li>PROS in my pov</li>
-  <li>Why Web?</li>
-</ul>
+<p>Web 是一个极其多样化的平台。从静态的博客，到电商网站，再到桌面级的生产力软件，它们全都是 Web 这个大家庭的第一公民。而我们组织 web 应用的方式，也同样只会更多而不会更少：多页、单页、Universal JavaScript 应用、WebGL、以及可以预见的 Web Assembly。不同的技术之间没有贵贱，但是适用场景的差距确是客观存在的。</p>
 
-<h3 id="power-by-yanshuoio演说io">Power by <a href="https://yanshuo.io">Yanshuo.io（演说.io）</a></h3>
+<p><a href="https://twitter.com/jaffathecake">Jake</a> 曾在 <a href="https://youtu.be/J2dOTKBoTL4?list=PLNYkxOF6rcIBTs2KPy1E6tIYaWoFcG3uj">Chrome Dev Summit 2016</a> 上说过 “PWA !== SPA”。可是尽管我们已经用上了一系列最新的技术（PRPL、Service Worker、App Shell……），我们仍然因为多页应用模型本身的缺陷有着难以逾越的一些障碍。多页应用在未来可能会有“bfcache API”、Navigation Transition 等新的规范以缩小跟 SPA 的距离，不过我们也必须承认，时至今日，多页应用的局限性也是非常明显的。</p>
+
+<h3 id="而-pwa-终将带领-web-应用进入新的时代">而 PWA 终将带领 web 应用进入新的时代</h3>
+
+<p>即使我们的多页应用在升级 PWA 的路上不如单页的那些来得那么闪亮，但是 PWA 背后的想法与技术却实实在在的帮助我们在 web 平台上提供了更好的用户体验。</p>
+
+<p>PWA 作为<a href="https://zhuanlan.zhihu.com/p/25167289">下一代 Web 应用模型</a>，其尝试解决的是 web 平台本身的根本性问题：对网络与浏览器 UI 的硬依赖。因此，任何 web 应用都可以从中获益，这与你是多页还是单页、面向桌面还是移动端、是用 React 还是 Vue 无关。或许，它还终将改变用户对移动 web 的期待。现如今，谁还觉得桌面端的 web 只是个看文档的地方呢？</p>
+
+<p>还是那句老话：让我们的用户，也像我们这般热爱 web 吧。</p>
+
 
 
                 <hr style="visibility: hidden;">
@@ -257,38 +226,56 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2016/02/01/React-vs-Angular2/" data-toggle="tooltip" data-placement="top" title="React vs Angular 2：冰与火之歌「译」">
+                        <a href="/2017/07/12/upgrading-eleme-to-pwa/" data-toggle="tooltip" data-placement="top" title="饿了么的 PWA 升级实践">
                         Previous<br>
-                        <span>React vs Angular 2：冰与火之歌「译」</span>
+                        <span>饿了么的 PWA 升级实践</span>
                         </a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/2016/10/20/pwa-qcon2016/" data-toggle="tooltip" data-placement="top" title="Progressive Web Apps，复兴序章「QCon 上海 2016」">
+                        <a href="/2017/10/19/aa/" data-toggle="tooltip" data-placement="top" title="aa">
                         Next<br>
-                        <span>Progressive Web Apps，复兴序章「QCon 上海 2016」</span>
+                        <span>aa</span>
                         </a>
                     </li>
                     
                 </ul>
 
+
                 
                 <!-- disqus 评论框 start -->
                 <div class="comment">
-                    <div id="disqus_thread" class="disqus-thread">
-
-                    </div>
+                    <div id="disqus_thread" class="disqus-thread"></div>
                 </div>
                 <!-- disqus 评论框 end -->
                 
 
-            </div>
+                
+            </div>  
 
-            <!-- Sidebar Container -->
-            <div class="sidebar-container
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
                 col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1 ">
+                col-md-10 col-md-offset-1
+                sidebar-container">
 
                 <!-- Featured Tags -->
                 
@@ -296,44 +283,44 @@
                     <hr class="hidden-sm hidden-xs">
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
-                        
+        				
                             
-                                <a href="/tags/#前端开发" title="前端开发" rel="6">
+                				<a href="/tags/#前端开发" title="前端开发" rel="6">
                                     前端开发
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#JavaScript" title="JavaScript" rel="6">
+                				<a href="/tags/#JavaScript" title="JavaScript" rel="6">
                                     JavaScript
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#译文" title="译文" rel="1">
+                				<a href="/tags/#译文" title="译文" rel="1">
                                     译文
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#PWA" title="PWA" rel="5">
+                				<a href="/tags/#PWA" title="PWA" rel="5">
                                     PWA
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#Service Worker" title="Service Worker" rel="1">
+                				<a href="/tags/#Service Worker" title="Service Worker" rel="1">
                                     Service Worker
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#test" title="test" rel="3">
+                				<a href="/tags/#test" title="test" rel="3">
                                     test
                                 </a>
                             
-                        
-                    </div>
+        				
+        			</div>
                 </section>
                 
 
@@ -350,28 +337,8 @@
     </div>
 </article>
 
-<!-- resize header to fullscreen keynotes -->
-<script>
-    var $header = document.getElementsByTagName("header")[0];
-    function resize(){
-        /*
-         * leave 85px to both
-         * - told/imply users that there has more content below
-         * - let user can scroll in mobile device, seeing the keynote-view is unscrollable
-         */
-        $header.style.height = (window.innerHeight-85) + 'px';
-    }
-    document.addEventListener('DOMContentLoaded', function(){
-        resize();
-    })
-    window.addEventListener('load', function(){
-        resize();
-    })
-    window.addEventListener('resize', function(){
-        resize();
-    })
-    resize();
-</script>
+
+
 
 
 
@@ -379,8 +346,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "Wfang";
-    var disqus_identifier = "/2016/06/05/pwa-in-my-pov";
-    var disqus_url = "http://wfang.xyz/2016/06/05/pwa-in-my-pov/";
+    var disqus_identifier = "/2017/10/18/asd";
+    var disqus_url = "http://wfang.xyz/2017/10/18/asd/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
@@ -426,7 +393,6 @@
         }
     }
 </style>
-
 
 
     <!-- Footer -->
@@ -575,6 +541,64 @@
 
 
 <!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+
+        // interop with multilangual 
+        if () {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 
