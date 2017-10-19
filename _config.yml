@@ -1,7 +1,7 @@
 # Site settings
 title: Wfang Blog
 SEOTitle: 万方的博客 | Wfang Blog
-header-img: img/dahai.jpg
+header-img: img/home-bg.jpg
 email: wfangzzu@gmail.com
 description: "写字的地方 | 杂谈小地"
 keyword: "万方, Wfang, linux, c++, python, web"
@@ -67,7 +67,7 @@ ga_domain: wfang.xyz
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
 sidebar-about-description: "做做技术，写写文字，记录生活"
-sidebar-avatar: /img/avatar-hux.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
+sidebar-avatar: /img/dahai.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
 
