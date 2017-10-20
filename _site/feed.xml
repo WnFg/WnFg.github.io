@@ -5,9 +5,20 @@
     <description>写字的地方 | 杂谈小地</description>
     <link>http://wfang.xyz/</link>
     <atom:link href="http://wfang.xyz/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 20 Oct 2017 10:37:48 +0800</pubDate>
-    <lastBuildDate>Fri, 20 Oct 2017 10:37:48 +0800</lastBuildDate>
+    <pubDate>Fri, 20 Oct 2017 10:45:47 +0800</pubDate>
+    <lastBuildDate>Fri, 20 Oct 2017 10:45:47 +0800</lastBuildDate>
     <generator>Jekyll v3.6.0</generator>
+    
+      <item>
+        <title>asd</title>
+        <description>&lt;p&gt;2017-10-20 10:45:47 +0800&lt;/p&gt;
+</description>
+        <pubDate>Fri, 20 Oct 2017 00:00:00 +0800</pubDate>
+        <link>http://wfang.xyz/2017/10/20/asd/</link>
+        <guid isPermaLink="true">http://wfang.xyz/2017/10/20/asd/</guid>
+        
+        
+      </item>
     
       <item>
         <title>test.md</title>
