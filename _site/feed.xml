@@ -5,9 +5,30 @@
     <description>写字的地方 | 杂谈小地</description>
     <link>http://wfang.xyz/</link>
     <atom:link href="http://wfang.xyz/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 19 Oct 2017 18:58:34 +0800</pubDate>
-    <lastBuildDate>Thu, 19 Oct 2017 18:58:34 +0800</lastBuildDate>
+    <pubDate>Fri, 20 Oct 2017 10:29:33 +0800</pubDate>
+    <lastBuildDate>Fri, 20 Oct 2017 10:29:33 +0800</lastBuildDate>
     <generator>Jekyll v3.6.0</generator>
+    
+      <item>
+        <title>test.md</title>
+        <description>&lt;h2 id=&quot;catagory&quot;&gt;Catagory&lt;/h2&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;a href=&quot;#aaa&quot;&gt;a1&lt;/a&gt;
+&lt;a href=&quot;#bbb&quot;&gt;a2&lt;/a&gt;
+&lt;a href=&quot;#cc&quot;&gt;a3&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;aaa&quot;&gt;aaa&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;/h2&gt;
+
+&lt;h3 id=&quot;bbb&quot;&gt;bbb&lt;/h3&gt;
+&lt;p&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;h1 id=&quot;cc&quot;&gt;cc&lt;/h1&gt;
+</description>
+        <pubDate>Thu, 19 Oct 2017 00:00:00 +0800</pubDate>
+        <link>http://wfang.xyz/2017/10/19/test/</link>
+        <guid isPermaLink="true">http://wfang.xyz/2017/10/19/test/</guid>
+        
+        
+      </item>
     
   </channel>
 </rss>
