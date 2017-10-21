@@ -5,13 +5,29 @@
     <description>写字的地方 | 杂谈小地</description>
     <link>http://wfang.xyz/</link>
     <atom:link href="http://wfang.xyz/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 20 Oct 2017 12:55:07 +0800</pubDate>
-    <lastBuildDate>Fri, 20 Oct 2017 12:55:07 +0800</lastBuildDate>
+    <pubDate>Sat, 21 Oct 2017 11:58:54 +0800</pubDate>
+    <lastBuildDate>Sat, 21 Oct 2017 11:58:54 +0800</lastBuildDate>
     <generator>Jekyll v3.6.0</generator>
     
       <item>
+        <title>tt</title>
+        <description>&lt;p&gt;wwwqwe&lt;/p&gt;
+</description>
+        <pubDate>Sat, 21 Oct 2017 00:00:00 +0800</pubDate>
+        <link>http://wfang.xyz/2017/10/21/tt/</link>
+        <guid isPermaLink="true">http://wfang.xyz/2017/10/21/tt/</guid>
+        
+        
+      </item>
+    
+      <item>
         <title>ww</title>
-        <description>&lt;p&gt;2017-10-20 12:55:07 +0800&lt;/p&gt;
+        <description>&lt;p&gt;2017-10-21 11:58:54 +0800&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;ww&lt;/p&gt;
+
+&lt;p&gt;post1&lt;/p&gt;
+
 </description>
         <pubDate>Fri, 20 Oct 2017 00:00:00 +0800</pubDate>
         <link>http://wfang.xyz/2017/10/20/ww/</link>
@@ -22,7 +38,7 @@
     
       <item>
         <title>qw</title>
-        <description>&lt;p&gt;{“layout”=&amp;gt;”default”}&lt;/p&gt;
+        <description>
 </description>
         <pubDate>Fri, 20 Oct 2017 00:00:00 +0800</pubDate>
         <link>http://wfang.xyz/2017/10/20/qw/</link>
@@ -33,11 +49,25 @@
     
       <item>
         <title>asd</title>
-        <description>&lt;p&gt;2017-10-20 12:55:07 +0800&lt;/p&gt;
+        <description>&lt;p&gt;2017-10-21 11:58:54 +0800&lt;/p&gt;
 </description>
         <pubDate>Fri, 20 Oct 2017 00:00:00 +0800</pubDate>
         <link>http://wfang.xyz/2017/10/20/asd/</link>
         <guid isPermaLink="true">http://wfang.xyz/2017/10/20/asd/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Test.md</title>
+        <description>    * [Catagory](catagory)
+    * [aaa](aaa)
+        * [bbb](bbb)
+* [cc](cc)
+</description>
+        <pubDate>Thu, 19 Oct 2017 00:00:00 +0800</pubDate>
+        <link>http://wfang.xyz/2017/10/19/test.md/</link>
+        <guid isPermaLink="true">http://wfang.xyz/2017/10/19/test.md/</guid>
         
         
       </item>

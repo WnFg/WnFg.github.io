@@ -81,8 +81,6 @@ featured-condition-size: 1              # A tag will be featured if the size of 
 chrome-tab-theme-color: "#000000"
 service-worker: true
 
-
-
 # Friends
 friends: [
     #{
@@ -90,3 +88,13 @@ friends: [
        #href: "http://wepiaofei.github.io/blog/"
        #}
 ]
+
+# 集合属性
+
+defaults:
+    - scope:
+        path: ""
+        type: posts
+      values:
+        multilingual: false
+

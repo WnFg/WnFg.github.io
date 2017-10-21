@@ -201,7 +201,7 @@
                 <!-- Multi-Lingual -->
                 
 
-				<p>2017-10-20 12:55:07 +0800</p>
+				<p>2017-10-21 11:58:54 +0800</p>
 
 
                 <hr style="visibility: hidden;">
@@ -209,9 +209,9 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2017/10/19/test/" data-toggle="tooltip" data-placement="top" title="test.md">
+                        <a href="/2017/10/19/test.md/" data-toggle="tooltip" data-placement="top" title="Test.md">
                         Previous<br>
-                        <span>test.md</span>
+                        <span>Test.md</span>
                         </a>
                     </li>
                     
@@ -491,28 +491,37 @@
 <!-- Side Catalog -->
 
 <script type="text/javascript">
+    function generateSpace(len, symbol = "&nbsp&nbsp") {
+        ret = "";
+        for (var i = 0; i < len; i++)
+            ret += symbol;
+        return ret;
+    }    
+
     function generateCatalog (selector) {
 
         // interop with multilangual 
-        if () {
+        if (false) {
             _containerSelector = 'div.post-container.active'
         } else {
             _containerSelector = 'div.post-container'
         }
-
-        // init
+        
+                // init
         var P = $(_containerSelector),a,n,t,l,i,c;
         a = P.find('h1,h2,h3,h4,h5,h6');
 
         // clean
         $(selector).html('')
-
+        
         // appending
         a.each(function () {
+
             n = $(this).prop('tagName').toLowerCase();
+            var space = generateSpace(parseInt(n.substring(1, 2)) - 1)
             i = "#"+$(this).prop('id');
             t = $(this).text();
-            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            c = $('<a href="'+i+'" rel="nofollow">'+space+t+'</a>');
             l = $('<li class="'+n+'_nav"></li>').append(c);
             $(selector).append(l);
         });
