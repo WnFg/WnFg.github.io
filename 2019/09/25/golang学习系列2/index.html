@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="golang的内存管理方式是基于TCMalloc（https://gperftools.github.io/gperftools/tcmalloc.html）设计的。 TCMalloc概述内存分配TCMalloc为每个线程分配一个thread-cache，该结构用于分配小对象内存（&amp;lt;256K），其组织方式按照对象大小分类，当分配小对象时，直接从线程本地缓存中取得相应的对象，消除线程间竞争，如">
+<meta name="keywords" content="golang">
+<meta property="og:type" content="article">
+<meta property="og:title" content="golang学习系列2——内存管理">
+<meta property="og:url" content="http://yoursite.com/2019/09/25/golang学习系列2/index.html">
+<meta property="og:site_name" content="wfang&#39;s notes">
+<meta property="og:description" content="golang的内存管理方式是基于TCMalloc（https://gperftools.github.io/gperftools/tcmalloc.html）设计的。 TCMalloc概述内存分配TCMalloc为每个线程分配一个thread-cache，该结构用于分配小对象内存（&amp;lt;256K），其组织方式按照对象大小分类，当分配小对象时，直接从线程本地缓存中取得相应的对象，消除线程间竞争，如">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/uploads/golang学习系列2/image-20190925231553964.png">
+<meta property="og:image" content="http://yoursite.com/uploads/golang学习系列2/image-20190925231624072.png">
+<meta property="og:image" content="http://yoursite.com/uploads/golang学习系列2/image-20190925231710673.png">
+<meta property="og:image" content="http://yoursite.com/uploads/golang学习系列2/image-20190925231730463.png">
+<meta property="og:image" content="http://yoursite.com/uploads/golang学习系列2/image-20190925231807594.png">
+<meta property="og:image" content="http://yoursite.com/uploads/golang学习系列2/image-20190925231835611.png">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/1/1d/Animation_of_tri-color_garbage_collection.gif">
+<meta property="og:image" content="http://legendtkl.com/img/uploads/2017/gc.png">
+<meta property="og:image" content="http://yoursite.com/uploads/golang学习系列2/image-20190925231909759.png">
+<meta property="og:image" content="http://yoursite.com/uploads/golang学习系列2/image-20190925231936853.png">
+<meta property="og:image" content="http://yoursite.com/uploads/golang学习系列2/image-20190925231950468.png">
+<meta property="og:image" content="http://yoursite.com/uploads/golang学习系列2/image-20190925232009661.png">
+<meta property="og:updated_time" content="2019-09-25T15:22:31.180Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="golang学习系列2——内存管理">
+<meta name="twitter:description" content="golang的内存管理方式是基于TCMalloc（https://gperftools.github.io/gperftools/tcmalloc.html）设计的。 TCMalloc概述内存分配TCMalloc为每个线程分配一个thread-cache，该结构用于分配小对象内存（&amp;lt;256K），其组织方式按照对象大小分类，当分配小对象时，直接从线程本地缓存中取得相应的对象，消除线程间竞争，如">
+<meta name="twitter:image" content="http://yoursite.com/uploads/golang学习系列2/image-20190925231553964.png">
+  <link rel="canonical" href="http://yoursite.com/2019/09/25/golang学习系列2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>golang学习系列2——内存管理 | wfang's notes</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">wfang's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">record something</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/25/golang学习系列2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="WFang">
+      <meta itemprop="description" content="写作与编程">
+      <meta itemprop="image" content="/uploads/pexels-photo-783944.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wfang's notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">golang学习系列2——内存管理
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-25 23:13:54 / 修改时间：23:22:31" itemprop="dateCreated datePublished" datetime="2019-09-25T23:13:54+08:00">2019-09-25</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/golanng/" itemprop="url" rel="index"><span itemprop="name">golanng</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2019/09/25/golang学习系列2/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/09/25/golang学习系列2/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>golang的内存管理方式是基于TCMalloc（<a href="https://gperftools.github.io/gperftools/tcmalloc.html）设计的。" target="_blank" rel="noopener">https://gperftools.github.io/gperftools/tcmalloc.html）设计的。</a></p>
+<h3 id="TCMalloc概述"><a href="#TCMalloc概述" class="headerlink" title="TCMalloc概述"></a>TCMalloc概述</h3><h4 id="内存分配"><a href="#内存分配" class="headerlink" title="内存分配"></a>内存分配</h4><p>TCMalloc为每个线程分配一个thread-cache，该结构用于分配小对象内存（&lt;256K），其组织方式按照对象大小分类，当分配小对象时，直接从线程本地缓存中取得相应的对象，消除线程间竞争，如下所示：</p>
+<img src="/uploads/golang学习系列2/image-20190925231553964.png" alt="image-20190925231553964" style="zoom:50%;">
+
+<p>​                                                                                      thread-cache</p>
+<a id="more"></a>
+
+<p>小对象大小会凑整到相应的class大小：</p>
+<table>
+<thead>
+<tr>
+<th align="left">class</th>
+<th align="left">object size</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">class 0</td>
+<td align="left">8B</td>
+</tr>
+<tr>
+<td align="left">class 1</td>
+<td align="left">16B</td>
+</tr>
+<tr>
+<td align="left">class 2</td>
+<td align="left">32B</td>
+</tr>
+<tr>
+<td align="left">…</td>
+<td align="left">…</td>
+</tr>
+</tbody></table>
+<p>当thread-cache容量不够时，将会从central-cache中批量获取一组对象，放入到thread-cache的空闲链表中。central-cache是全局的，也通过相同的分类组织空间。</p>
+<img src="/uploads/golang学习系列2/image-20190925231624072.png" alt="image-20190925231624072" style="zoom:50%;">
+
+<p>当central-cache中的容量不够时，将会向page heap申请相应的空间，page heap上的分配单位是一组连续的内存页，使用span来表示</p>
+<img src="/uploads/golang学习系列2/image-20190925231710673.png" alt="image-20190925231710673" style="zoom:50%;">
+
+<p>大对象分配时，所需的空间直接凑整到相应的页大小，在相应的page链表中取一个span，如果没有则向下取较大的span，分割后放入相应的小一些的page链表上。</p>
+<p>使用一个central array记录页号对应的span，一个span要么是空闲的，要么是已分配的，具体来说：</p>
+<blockquote>
+<p>A span can either be <em>allocated</em>, or <em>free</em>. If free, the span is one of the entries in a page heap linked-list. If allocated, it is either a large object that has been handed off to the application, or a run of pages that have been split up into a sequence of small objects. If split into small objects, the size-class of the objects is recorded in the span.</p>
+</blockquote>
+<img src="/uploads/golang学习系列2/image-20190925231730463.png" alt="image-20190925231730463" style="zoom:50%;">
+
+<p>如图，有a、b、c、d四个span，通过页号+central array可以反向追踪到相应的span。</p>
+<h4 id="内存释放"><a href="#内存释放" class="headerlink" title="内存释放"></a>内存释放</h4><p>释放空间的大致流程和分配相反：</p>
+<p>当释放对象时，可以计算出页号反向找到对应的span，即可获知该对象是大是小，以及其size class</p>
+<ul>
+<li>小对象<ul>
+<li>首先释放的小对象会首先存入thread-cache</li>
+<li>当thread-cache中某类链表到达一定阈值，会将一批小对象放回central-cache</li>
+<li>当central-cache中的某个span完全空闲，则将该span放回page heap</li>
+<li>未来page heap的内存会被还给系统</li>
+</ul>
+</li>
+<li>大对象<ul>
+<li>大对象是一整个span，假如页号是[p,q]，还会扫描周边的页，合成一个更大的span，并插回到合适page heap list</li>
+</ul>
+</li>
+</ul>
+<h4 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h4><p>优点：</p>
+<ul>
+<li>无外部碎片</li>
+<li>每类大小的对象都已经缓存好了，分配效率高</li>
+<li>对于经常分配的小对象，无线程竞争</li>
+<li>多级cache的分配释放策略，减少每线程的空间浪费</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>由于内存凑整无法避免的内部碎片</li>
+<li>在程序初始阶段效率较差</li>
+</ul>
+<h3 id="Golang内存管理"><a href="#Golang内存管理" class="headerlink" title="Golang内存管理"></a>Golang内存管理</h3><p>mspan：一组连续的内存页</p>
+<p>mcache：每个P拥有一个</p>
+<p>mcentral：全局有67*2个</p>
+<p>mheap：全局一个，管理heap</p>
+<img src="/uploads/golang学习系列2/image-20190925231807594.png" alt="image-20190925231807594" style="zoom:50%;">
+
+<img src="/uploads/golang学习系列2/image-20190925231835611.png" alt="image-20190925231835611" style="zoom:50%;">
+
+<p>​                                                            （来源：<a href="https://www.cnblogs.com/zkweb/p/7815600.html" target="_blank" rel="noopener">https://www.cnblogs.com/zkweb/p/7815600.html</a> ）</p>
+<h4 id="Golang-GC"><a href="#Golang-GC" class="headerlink" title="Golang GC"></a>Golang GC</h4><p>目前大部分GC算法都是基于可达性分析来做的，Golang的GC算法是基于三色标记算法：</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/1/1d/Animation_of_tri-color_garbage_collection.gif" alt="三色标记"></p>
+<p>White：一组对象集合</p>
+<p>Grey：待扫描对象集合，该集合内的对象可能引用了白色对象</p>
+<p>Black：扫描完成的对象集合，该集合内的对象没有直接引用白色对象</p>
+<p>三色标记算法是一种迭代算法：</p>
+<ol>
+<li>初始时将root set的标记为灰色</li>
+<li>取出一个灰色的对象A，如果没有，进入步骤4，否则枚举A的直接引用的对象到灰色集合</li>
+<li>枚举完成后将对象A放入Black中，接着继续步骤2</li>
+<li>算法结束</li>
+</ol>
+<p>在算法迭代的过程中有一个重要的<strong>不变性</strong>：<strong>黑色集合内的对象，没有直接引用白色对象。</strong>因此当灰色集合为空时，白色集合内的对象即可被回收。</p>
+<p>在迭代标记的过程中，该算法可与工作线程并发工作，但是在迭代过程中可能违反三色不变性，例如，有2个对象，A：灰色，B：白色，标记线程扫描到A，此时A无引用对象，将A标记为黑色。然后工作线程使A引用B。最终算法结束时，将会错误的回收对象B。</p>
+<p>为了在并发工作中，保持三色不变性，需要引入写屏障(不是内存屏障)，伪代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 写屏障</span><br><span class="line">writePointer(slot, ptr):</span><br><span class="line">    shade(ptr)</span><br><span class="line">    *slot = ptr</span><br></pre></td></tr></table></figure>
+
+<p>在标记阶段，会开启写屏障。当出现指针赋值（引用）时，会将ptr指向的对象标记为灰色。</p>
+<h4 id="GC过程"><a href="#GC过程" class="headerlink" title="GC过程"></a>GC过程</h4><p><img src="http://legendtkl.com/img/uploads/2017/gc.png" alt="img"></p>
+<ol>
+<li>首先stop the world做一些准备工作，包括开启写屏障，上一次GC的收尾清扫工作</li>
+<li>开始从全局对象及栈上收集指针作为ROOT SET放入标记队列，在扫描栈时，相应的goroutine会停止工作</li>
+<li>从标记队列中拿出对象，并执行标记工作</li>
+<li>在标记结束时，stop the world，重新扫描之前变动的全局对象及修改的栈</li>
+<li>进行清理工作</li>
+</ol>
+<p>由于修改栈上本地变量的引用不会插入写屏障，所以会有重扫描的过程，来检查栈上的变量是否引用了没有被扫描的对象。在golang 1.8中引入了<a href="https://github.com/golang/proposal/blob/master/design/17503-eliminate-rescan.md" target="_blank" rel="noopener">混合写屏障</a>，可以消除栈的重扫描，减少第二次STW时间：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 混合写屏障</span><br><span class="line">writePointer(slot, ptr):</span><br><span class="line">    shade(*slot)</span><br><span class="line">    if current stack is grey:</span><br><span class="line">        shade(ptr)</span><br><span class="line">    *slot = ptr</span><br></pre></td></tr></table></figure>
+
+<p>其正确性如下：</p>
+<blockquote>
+<p>In the hybrid barrier, the two shades and the condition work together to prevent a mutator from hiding an object:</p>
+<ol>
+<li><code>shade(*slot)</code> prevents a mutator from hiding an object by moving the sole pointer to it from the heap to its stack. If it attempts to unlink an object from the heap, this will shade it.</li>
+<li><code>shade(ptr)</code> prevents a mutator from hiding an object by moving the sole pointer to it from its stack into a black object in the heap. If it attempts to install the pointer into a black object, this will shade it.</li>
+<li>Once a goroutine’s stack is black, the <code>shade(ptr)</code> becomes unnecessary. <code>shade(ptr)</code> prevents hiding an object by moving it from the stack to the heap, but this requires first having a pointer hidden on the stack. Immediately after a stack is scanned, it only points to shaded objects, so it’s not hiding anything, and the <code>shade(*slot)</code> prevents it from hiding any other pointers on its stack.</li>
+</ol>
+</blockquote>
+<h4 id="如何知道堆上哪些地址需要扫描"><a href="#如何知道堆上哪些地址需要扫描" class="headerlink" title="如何知道堆上哪些地址需要扫描"></a>如何知道堆上哪些地址需要扫描</h4><img src="/uploads/golang学习系列2/image-20190925231909759.png" alt="image-20190925231909759" style="zoom:50%;">
+
+<p>​                                                                                       <strong>golang的内存布局</strong></p>
+<p>上图中arena即是我们常说的堆，其中bitmap记录了arena上哪些位置存放了指针。spans则记录了arena中页到mspan的映射关系，可以通过对象地址所属的页号，反查到所属的mspan。</p>
+<img src="/uploads/golang学习系列2/image-20190925231936853.png" alt="image-20190925231936853" style="zoom:50%;">
+
+<p>bitmap使用1byte的内容描述arena区域4个指针大小的区域，每2bit描述一个，其中should scan表示是否应该继续向后扫描（即该位置后面是否还有指针），is pointer代表该地址是否存放指针。所需空间 = 512G / (8B * 4) = 16G</p>
+<img src="/uploads/golang学习系列2/image-20190925231950468.png" alt="image-20190925231950468" style="zoom:50%;">
+
+<p>每个page 8K，对应一个span指针8B，spans所需空间 = 512G / 8K * 8B = 512M</p>
+<h4 id="bitmap填充"><a href="#bitmap填充" class="headerlink" title="bitmap填充"></a>bitmap填充</h4><p>那这bitmap应该如何填充呢？其填充是在对象分配时(newobject)，通过对象类型信息_type中的gcdata数据可以得知对象中的哪些地址上是指针。</p>
+<p>如何知道栈上哪些地址上是指针呢？可以通过函数信息上的bitmap，获取栈帧上的指针分布。</p>
+<h4 id="回收信息"><a href="#回收信息" class="headerlink" title="回收信息"></a>回收信息</h4><p>由于程序运行过程中分配的对象最后都属于某个mspan，而mspan中记录了该span的内存使用情况以及GC情况。</p>
+<img src="/uploads/golang学习系列2/image-20190925232009661.png" alt="image-20190925232009661" style="zoom:50%;">
+
+<p>​                                                    （来源：<a href="https://www.cnblogs.com/zkweb/p/7815600.html" target="_blank" rel="noopener">https://www.cnblogs.com/zkweb/p/7815600.html</a> ）</p>
+<p>allocCache：通过位运算加速寻找空闲对象的位置</p>
+<p>allocbits：记录了已分配的对象情况</p>
+<p>gcmarkBits：记录哪些对象是黑色的，哪些是白色的</p>
+<p>在回收阶段，扫描mspan上的gcmarkBits，回收相应的空间</p>
+<h4 id="GC触发的时机"><a href="#GC触发的时机" class="headerlink" title="GC触发的时机"></a>GC触发的时机</h4><blockquote>
+<ul>
+<li>gcTriggerAlways: 强制触发GC</li>
+<li>gcTriggerHeap: 当前分配的内存达到一定值就触发GC</li>
+<li>gcTriggerTime: 当一定时间没有执行过GC就触发GC</li>
+<li>gcTriggerCycle: 要求启动新一轮的GC, 已启动则跳过, 手动触发GC的<code>runtime.GC()</code>会使用这个条件</li>
+</ul>
+</blockquote>
+<h2 id="参考内容"><a href="#参考内容" class="headerlink" title="参考内容"></a>参考内容</h2><p><a href="https://www.cnblogs.com/zkweb/p/7815600.html" target="_blank" rel="noopener">https://www.cnblogs.com/zkweb/p/7815600.html</a> （源码分析很详细）</p>
+<p><a href="https://github.com/golang/proposal/blob/master/design/17503-eliminate-rescan.md" target="_blank" rel="noopener">https://github.com/golang/proposal/blob/master/design/17503-eliminate-rescan.md</a> (消除re-scan)</p>
+<p><a href="https://www.iminho.me/wiki/blog-27.html" target="_blank" rel="noopener">https://www.iminho.me/wiki/blog-27.html</a></p>
+<p><a href="https://blog.wangriyu.wang/2019/04-Golang-GC.html" target="_blank" rel="noopener">https://blog.wangriyu.wang/2019/04-Golang-GC.html</a></p>
+<p><a href="https://making.pusher.com/golangs-real-time-gc-in-theory-and-practice/" target="_blank" rel="noopener">https://making.pusher.com/golangs-real-time-gc-in-theory-and-practice/</a></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>WFang</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yoursite.com/2019/09/25/golang学习系列2/" title="golang学习系列2——内存管理">http://yoursite.com/2019/09/25/golang学习系列2/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/golang/" rel="tag"># golang</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/09/25/golang学习系列1/" rel="next" title="golang学习系列1">
+                  <i class="fa fa-chevron-left"></i> golang学习系列1
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#TCMalloc概述"><span class="nav-number">1.</span> <span class="nav-text">TCMalloc概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#内存分配"><span class="nav-number">1.1.</span> <span class="nav-text">内存分配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内存释放"><span class="nav-number">1.2.</span> <span class="nav-text">内存释放</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优缺点"><span class="nav-number">1.3.</span> <span class="nav-text">优缺点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Golang内存管理"><span class="nav-number">2.</span> <span class="nav-text">Golang内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Golang-GC"><span class="nav-number">2.1.</span> <span class="nav-text">Golang GC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GC过程"><span class="nav-number">2.2.</span> <span class="nav-text">GC过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何知道堆上哪些地址需要扫描"><span class="nav-number">2.3.</span> <span class="nav-text">如何知道堆上哪些地址需要扫描</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bitmap填充"><span class="nav-number">2.4.</span> <span class="nav-text">bitmap填充</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#回收信息"><span class="nav-number">2.5.</span> <span class="nav-text">回收信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GC触发的时机"><span class="nav-number">2.6.</span> <span class="nav-text">GC触发的时机</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考内容"><span class="nav-number"></span> <span class="nav-text">参考内容</span></a></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/uploads/pexels-photo-783944.jpeg"
+      alt="WFang">
+  <p class="site-author-name" itemprop="name">WFang</p>
+  <div class="site-description" itemprop="description">写作与编程</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/wnfg" title="GitHub &rarr; https://github.com/wnfg" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://www.zhihu.com/people/wan-fang-71-11/activities" title="知乎 &rarr; https://www.zhihu.com/people/wan-fang-71-11/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>知乎</a>
+      </span>
+    
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    
+  
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WFang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://wnfg.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "http://yoursite.com/2019/09/25/golang学习系列2/";
+    this.page.identifier = "2019/09/25/golang学习系列2/";
+    this.page.title = 'golang学习系列2——内存管理';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://wnfg.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+</body>
+</html>
