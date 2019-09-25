@@ -56,9 +56,9 @@
 </script>
 
   <meta name="description" content="编译与调试作为一门静态编译型语言，其会将源码编译为ELF文件，golang默认使用静态链接，因此一般来说，golang编译后的可执行文件，外部依赖较少，有利于环境部署。 为了便于调试，可以在编译时给与编译器相关指令，关闭内联及优化，go build -gcflags “-l -N” test.go。 可以使用GDB进行相应的调试，golang生成的函数名一般为包名+函数名，例如：">
-<meta name="keywords" content="Golang">
+<meta name="keywords" content="golang">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Golang学习系列1">
+<meta property="og:title" content="golang学习系列1">
 <meta property="og:url" content="http://yoursite.com/2019/09/25/golang学习系列1/index.html">
 <meta property="og:site_name" content="wfang&#39;s notes">
 <meta property="og:description" content="编译与调试作为一门静态编译型语言，其会将源码编译为ELF文件，golang默认使用静态链接，因此一般来说，golang编译后的可执行文件，外部依赖较少，有利于环境部署。 为了便于调试，可以在编译时给与编译器相关指令，关闭内联及优化，go build -gcflags “-l -N” test.go。 可以使用GDB进行相应的调试，golang生成的函数名一般为包名+函数名，例如：">
@@ -76,9 +76,9 @@
 <meta property="og:image" content="http://yoursite.com/uploads/golang%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%971/image-20190925221932529.png">
 <meta property="og:image" content="http://yoursite.com/uploads/golang%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%971/image-20190925221953264.png">
 <meta property="og:image" content="http://yoursite.com/uploads/golang%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%971/image-20190925222020010.png">
-<meta property="og:updated_time" content="2019-09-25T14:23:30.542Z">
+<meta property="og:updated_time" content="2019-09-25T14:39:58.578Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Golang学习系列1">
+<meta name="twitter:title" content="golang学习系列1">
 <meta name="twitter:description" content="编译与调试作为一门静态编译型语言，其会将源码编译为ELF文件，golang默认使用静态链接，因此一般来说，golang编译后的可执行文件，外部依赖较少，有利于环境部署。 为了便于调试，可以在编译时给与编译器相关指令，关闭内联及优化，go build -gcflags “-l -N” test.go。 可以使用GDB进行相应的调试，golang生成的函数名一般为包名+函数名，例如：">
 <meta name="twitter:image" content="http://yoursite.com/uploads/golang%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%971/image-20190925221241283.png">
   <link rel="canonical" href="http://yoursite.com/2019/09/25/golang学习系列1/">
@@ -95,7 +95,7 @@
   };
 </script>
 
-  <title>Golang学习系列1 | wfang's notes</title>
+  <title>golang学习系列1 | wfang's notes</title>
   <meta name="generator" content="Hexo 3.9.0">
   
 
@@ -247,7 +247,7 @@
       <meta itemprop="name" content="wfang's notes">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">Golang学习系列1
+        <h1 class="post-title" itemprop="name headline">golang学习系列1
 
           
         </h1>
@@ -263,7 +263,7 @@
                 
               
 
-              <time title="创建时间：2019-09-25 22:09:57 / 修改时间：22:23:30" itemprop="dateCreated datePublished" datetime="2019-09-25T22:09:57+08:00">2019-09-25</time>
+              <time title="创建时间：2019-09-25 22:32:24 / 修改时间：22:39:58" itemprop="dateCreated datePublished" datetime="2019-09-25T22:32:24+08:00">2019-09-25</time>
             </span>
           
             
@@ -276,7 +276,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Golang/" itemprop="url" rel="index"><span itemprop="name">Golang</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/golanng/" itemprop="url" rel="index"><span itemprop="name">golanng</span></a></span>
 
                 
                 
@@ -477,7 +477,7 @@
 <p>这样的通信方式可以在概念上消除线程间访问共享变量时的并发控制操作，并且在线程间协作的顺序关系上要更加的明确清晰。</p>
 <h3 id="Golang中的channel"><a href="#Golang中的channel" class="headerlink" title="Golang中的channel"></a>Golang中的channel</h3><p><img src="/uploads/golang%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%971/image-20190925222020010.png" alt="image-20190925222020010"></p>
 <p>channel由一个环形缓存区以及相应的等待队列构成。具体数据结构如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">` 23 type hchan struct &#123;  22   qcount   uint           // total data in the queue  21   dataqsiz uint           // size of the circular queue  20   buf      unsafe.Pointer // points to an array of dataqsiz elements  19   elemsize uint16  18   closed   uint32  17   elemtype *_type // element type  16   sendx    uint   // send index  15   recvx    uint   // receive index  14   recvq    waitq  // list of recv waiters  13   sendq    waitq  // list of send waiters  12   11   // lock protects all fields in hchan, as well as several  10   // fields in sudogs blocked on this channel.   9   //   8   // Do not change another G's status while holding this lock   7   // (in particular, do not ready a G), as this can deadlock   6   // with stack shrinking.   5   lock mutex   4 &#125;`</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">23</span> <span class="keyword">type</span> hchan <span class="keyword">struct</span> &#123;</span><br><span class="line"><span class="number">22</span>   qcount   <span class="keyword">uint</span>           <span class="comment">// total data in the queue</span></span><br><span class="line"><span class="number">21</span>   dataqsiz <span class="keyword">uint</span>           <span class="comment">// size of the circular queue</span></span><br><span class="line"><span class="number">20</span>   buf      unsafe.Pointer <span class="comment">// points to an array of dataqsiz elements</span></span><br><span class="line"><span class="number">19</span>   elemsize <span class="keyword">uint16</span></span><br><span class="line"><span class="number">18</span>   closed   <span class="keyword">uint32</span></span><br><span class="line"><span class="number">17</span>   elemtype *_type <span class="comment">// element type</span></span><br><span class="line"><span class="number">16</span>   sendx    <span class="keyword">uint</span>   <span class="comment">// send index</span></span><br><span class="line"><span class="number">15</span>   recvx    <span class="keyword">uint</span>   <span class="comment">// receive index</span></span><br><span class="line"><span class="number">14</span>   recvq    waitq  <span class="comment">// list of recv waiters</span></span><br><span class="line"><span class="number">13</span>   sendq    waitq  <span class="comment">// list of send waiters</span></span><br><span class="line"><span class="number">12</span></span><br><span class="line"><span class="number">11</span>   <span class="comment">// lock protects all fields in hchan, as well as several</span></span><br><span class="line"><span class="number">10</span>   <span class="comment">// fields in sudogs blocked on this channel.</span></span><br><span class="line"> <span class="number">9</span>   <span class="comment">//</span></span><br><span class="line"> <span class="number">8</span>   <span class="comment">// Do not change another G's status while holding this lock</span></span><br><span class="line"> <span class="number">7</span>   <span class="comment">// (in particular, do not ready a G), as this can deadlock</span></span><br><span class="line"> <span class="number">6</span>   <span class="comment">// with stack shrinking.</span></span><br><span class="line"> <span class="number">5</span>   lock mutex</span><br><span class="line"> <span class="number">4</span> &#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="channel的发送和接收流程"><a href="#channel的发送和接收流程" class="headerlink" title="channel的发送和接收流程"></a>channel的发送和接收流程</h3><blockquote>
 <p>发送数据到channel实际调用的是<a href="https://github.com/golang/go/blob/go1.9.2/src/runtime/chan.go#L112" target="_blank" rel="noopener">runtime.chansend1</a>函数, chansend1函数调用了<a href="https://github.com/golang/go/blob/go1.9.2/src/runtime/chan.go#L128" target="_blank" rel="noopener">chansend</a>函数, 流程是:</p>
@@ -587,7 +587,7 @@
 <p>等待中的G保存在哪里, 什么时候恢复是等待的资源决定的, 上面对channel的等待会让G放到channel中的链表.</p>
 <p>引用自（<a href="https://www.cnblogs.com/zkweb/p/7815600.html）" target="_blank" rel="noopener">https://www.cnblogs.com/zkweb/p/7815600.html）</a></p>
 </blockquote>
-<h4 id><a href="#" class="headerlink" title=" "></a> </h4>
+
     </div>
 
     
@@ -603,7 +603,7 @@
     <strong>本文作者： </strong>WFang</li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://yoursite.com/2019/09/25/golang学习系列1/" title="Golang学习系列1">http://yoursite.com/2019/09/25/golang学习系列1/</a>
+    <a href="http://yoursite.com/2019/09/25/golang学习系列1/" title="golang学习系列1">http://yoursite.com/2019/09/25/golang学习系列1/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
@@ -618,7 +618,7 @@
           
           <div class="post-tags">
             
-              <a href="/tags/Golang/" rel="tag"># Golang</a>
+              <a href="/tags/golang/" rel="tag"># golang</a>
             
           </div>
         
@@ -694,7 +694,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#编译与调试"><span class="nav-number">1.</span> <span class="nav-text">编译与调试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#栈模型"><span class="nav-number">1.1.</span> <span class="nav-text">栈模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#golang运行时"><span class="nav-number">1.2.</span> <span class="nav-text">golang运行时</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#闭包与逃逸分析"><span class="nav-number">2.</span> <span class="nav-text">闭包与逃逸分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#逃逸分析"><span class="nav-number">2.1.</span> <span class="nav-text">逃逸分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#闭包"><span class="nav-number">2.2.</span> <span class="nav-text">闭包</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#goroutine分析"><span class="nav-number">3.</span> <span class="nav-text">goroutine分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初始"><span class="nav-number">3.1.</span> <span class="nav-text">初始</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#goroutine的创建与调度"><span class="nav-number">3.2.</span> <span class="nav-text">goroutine的创建与调度</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Defer关键字"><span class="nav-number">4.</span> <span class="nav-text">Defer关键字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口表示"><span class="nav-number">5.</span> <span class="nav-text">接口表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Channel"><span class="nav-number">6.</span> <span class="nav-text">Channel</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Golang中的channel"><span class="nav-number">6.1.</span> <span class="nav-text">Golang中的channel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#channel的发送和接收流程"><span class="nav-number">6.2.</span> <span class="nav-text">channel的发送和接收流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#null"><span class="nav-number">6.2.1.</span> <span class="nav-text"> </span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#编译与调试"><span class="nav-number">1.</span> <span class="nav-text">编译与调试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#栈模型"><span class="nav-number">1.1.</span> <span class="nav-text">栈模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#golang运行时"><span class="nav-number">1.2.</span> <span class="nav-text">golang运行时</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#闭包与逃逸分析"><span class="nav-number">2.</span> <span class="nav-text">闭包与逃逸分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#逃逸分析"><span class="nav-number">2.1.</span> <span class="nav-text">逃逸分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#闭包"><span class="nav-number">2.2.</span> <span class="nav-text">闭包</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#goroutine分析"><span class="nav-number">3.</span> <span class="nav-text">goroutine分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初始"><span class="nav-number">3.1.</span> <span class="nav-text">初始</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#goroutine的创建与调度"><span class="nav-number">3.2.</span> <span class="nav-text">goroutine的创建与调度</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Defer关键字"><span class="nav-number">4.</span> <span class="nav-text">Defer关键字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口表示"><span class="nav-number">5.</span> <span class="nav-text">接口表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Channel"><span class="nav-number">6.</span> <span class="nav-text">Channel</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Golang中的channel"><span class="nav-number">6.1.</span> <span class="nav-text">Golang中的channel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#channel的发送和接收流程"><span class="nav-number">6.2.</span> <span class="nav-text">channel的发送和接收流程</span></a></li></ol></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -733,6 +733,8 @@
         
           
         
+          
+        
         <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span>
         </a>
@@ -747,6 +749,8 @@
           
         
         
+        
+          
         
           
         
@@ -887,7 +891,7 @@
   function disqus_config() {
     this.page.url = "http://yoursite.com/2019/09/25/golang学习系列1/";
     this.page.identifier = "2019/09/25/golang学习系列1/";
-    this.page.title = 'Golang学习系列1';};
+    this.page.title = 'golang学习系列1';};
   function loadComments() {
     if (window.DISQUS) {
       DISQUS.reset({
