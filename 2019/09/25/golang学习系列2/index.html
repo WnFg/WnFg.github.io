@@ -55,13 +55,13 @@
   };
 </script>
 
-  <meta name="description" content="golang的内存管理方式是基于TCMalloc（https://gperftools.github.io/gperftools/tcmalloc.html）设计的。 TCMalloc概述内存分配TCMalloc为每个线程分配一个thread-cache，该结构用于分配小对象内存（&amp;lt;256K），其组织方式按照对象大小分类，当分配小对象时，直接从线程本地缓存中取得相应的对象，消除线程间竞争，如">
+  <meta name="description" content="golang的内存管理方式是基于TCMalloc设计的。 TCMalloc概述内存分配TCMalloc为每个线程分配一个thread-cache，该结构用于分配小对象内存（&amp;lt;256K），其组织方式按照对象大小分类，当分配小对象时，直接从线程本地缓存中取得相应的对象，消除线程间竞争，如下所示：   ​">
 <meta name="keywords" content="golang">
 <meta property="og:type" content="article">
 <meta property="og:title" content="golang学习系列2——内存管理">
 <meta property="og:url" content="http://yoursite.com/2019/09/25/golang学习系列2/index.html">
 <meta property="og:site_name" content="wfang&#39;s notes">
-<meta property="og:description" content="golang的内存管理方式是基于TCMalloc（https://gperftools.github.io/gperftools/tcmalloc.html）设计的。 TCMalloc概述内存分配TCMalloc为每个线程分配一个thread-cache，该结构用于分配小对象内存（&amp;lt;256K），其组织方式按照对象大小分类，当分配小对象时，直接从线程本地缓存中取得相应的对象，消除线程间竞争，如">
+<meta property="og:description" content="golang的内存管理方式是基于TCMalloc设计的。 TCMalloc概述内存分配TCMalloc为每个线程分配一个thread-cache，该结构用于分配小对象内存（&amp;lt;256K），其组织方式按照对象大小分类，当分配小对象时，直接从线程本地缓存中取得相应的对象，消除线程间竞争，如下所示：   ​">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://yoursite.com/uploads/golang学习系列2/image-20190925231553964.png">
 <meta property="og:image" content="http://yoursite.com/uploads/golang学习系列2/image-20190925231624072.png">
@@ -75,10 +75,10 @@
 <meta property="og:image" content="http://yoursite.com/uploads/golang学习系列2/image-20190925231936853.png">
 <meta property="og:image" content="http://yoursite.com/uploads/golang学习系列2/image-20190925231950468.png">
 <meta property="og:image" content="http://yoursite.com/uploads/golang学习系列2/image-20190925232009661.png">
-<meta property="og:updated_time" content="2019-09-25T15:22:31.180Z">
+<meta property="og:updated_time" content="2019-09-25T15:31:34.610Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="golang学习系列2——内存管理">
-<meta name="twitter:description" content="golang的内存管理方式是基于TCMalloc（https://gperftools.github.io/gperftools/tcmalloc.html）设计的。 TCMalloc概述内存分配TCMalloc为每个线程分配一个thread-cache，该结构用于分配小对象内存（&amp;lt;256K），其组织方式按照对象大小分类，当分配小对象时，直接从线程本地缓存中取得相应的对象，消除线程间竞争，如">
+<meta name="twitter:description" content="golang的内存管理方式是基于TCMalloc设计的。 TCMalloc概述内存分配TCMalloc为每个线程分配一个thread-cache，该结构用于分配小对象内存（&amp;lt;256K），其组织方式按照对象大小分类，当分配小对象时，直接从线程本地缓存中取得相应的对象，消除线程间竞争，如下所示：   ​">
 <meta name="twitter:image" content="http://yoursite.com/uploads/golang学习系列2/image-20190925231553964.png">
   <link rel="canonical" href="http://yoursite.com/2019/09/25/golang学习系列2/">
 
@@ -262,7 +262,7 @@
                 
               
 
-              <time title="创建时间：2019-09-25 23:13:54 / 修改时间：23:22:31" itemprop="dateCreated datePublished" datetime="2019-09-25T23:13:54+08:00">2019-09-25</time>
+              <time title="创建时间：2019-09-25 23:13:54 / 修改时间：23:31:34" itemprop="dateCreated datePublished" datetime="2019-09-25T23:13:54+08:00">2019-09-25</time>
             </span>
           
             
@@ -308,7 +308,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>golang的内存管理方式是基于TCMalloc（<a href="https://gperftools.github.io/gperftools/tcmalloc.html）设计的。" target="_blank" rel="noopener">https://gperftools.github.io/gperftools/tcmalloc.html）设计的。</a></p>
+        <p>golang的内存管理方式是基于<a href="https://gperftools.github.io/gperftools/tcmalloc.html" target="_blank" rel="noopener">TCMalloc</a>设计的。</p>
 <h3 id="TCMalloc概述"><a href="#TCMalloc概述" class="headerlink" title="TCMalloc概述"></a>TCMalloc概述</h3><h4 id="内存分配"><a href="#内存分配" class="headerlink" title="内存分配"></a>内存分配</h4><p>TCMalloc为每个线程分配一个thread-cache，该结构用于分配小对象内存（&lt;256K），其组织方式按照对象大小分类，当分配小对象时，直接从线程本地缓存中取得相应的对象，消除线程间竞争，如下所示：</p>
 <img src="/uploads/golang学习系列2/image-20190925231553964.png" alt="image-20190925231553964" style="zoom:50%;">
 
