@@ -55,23 +55,23 @@
   };
 </script>
 
-  <meta name="description" content="1. rewrite模块简介">
+  <meta name="description" content="1. rewrite模块简介ngx_http_rewrite_module属于Http模块，常用功能是通过正则匹配来修改请求的URI或有选择的使某些配置生效。 该模块的常用指令集：  break if return rewrite set  指令的执行顺序： The break, if, return, rewrite, and set directives are processed in th">
 <meta name="keywords" content="Nginx">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx Rewrite模块学习">
 <meta property="og:url" content="http://yoursite.com/2019/09/24/Nginx Rewrite模块学习/index.html">
 <meta property="og:site_name" content="wfang&#39;s notes">
-<meta property="og:description" content="1. rewrite模块简介">
+<meta property="og:description" content="1. rewrite模块简介ngx_http_rewrite_module属于Http模块，常用功能是通过正则匹配来修改请求的URI或有选择的使某些配置生效。 该模块的常用指令集：  break if return rewrite set  指令的执行顺序： The break, if, return, rewrite, and set directives are processed in th">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://wiki.baidu.com/download/attachments/481109760/image2018-3-26%2022%3A21%3A12.png?version=1&modificationDate=1522074073000&api=v2">
 <meta property="og:image" content="http://wiki.baidu.com/download/attachments/481109760/image2018-3-26%2022%3A58%3A32.png?version=1&modificationDate=1522076312000&api=v2">
 <meta property="og:image" content="http://wiki.baidu.com/download/attachments/481109760/image2018-3-27%2012%3A37%3A6.png?version=1&modificationDate=1522125426000&api=v2">
 <meta property="og:image" content="http://wiki.baidu.com/download/attachments/481109760/image2018-3-27%2012%3A39%3A13.png?version=1&modificationDate=1522125553000&api=v2">
 <meta property="og:image" content="http://wiki.baidu.com/download/thumbnails/481109760/image2018-3-27%2020%3A3%3A39.png?version=1&modificationDate=1522152219000&api=v2">
-<meta property="og:updated_time" content="2019-09-25T03:18:50.183Z">
+<meta property="og:updated_time" content="2019-09-25T03:30:54.587Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx Rewrite模块学习">
-<meta name="twitter:description" content="1. rewrite模块简介">
+<meta name="twitter:description" content="1. rewrite模块简介ngx_http_rewrite_module属于Http模块，常用功能是通过正则匹配来修改请求的URI或有选择的使某些配置生效。 该模块的常用指令集：  break if return rewrite set  指令的执行顺序： The break, if, return, rewrite, and set directives are processed in th">
 <meta name="twitter:image" content="http://wiki.baidu.com/download/attachments/481109760/image2018-3-26%2022%3A21%3A12.png?version=1&modificationDate=1522074073000&api=v2">
   <link rel="canonical" href="http://yoursite.com/2019/09/24/Nginx Rewrite模块学习/">
 
@@ -266,7 +266,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-25 11:18:50" itemprop="dateModified" datetime="2019-09-25T11:18:50+08:00">2019-09-25</time>
+                <time title="修改时间：2019-09-25 11:30:54" itemprop="dateModified" datetime="2019-09-25T11:30:54+08:00">2019-09-25</time>
               </span>
             
           
@@ -309,7 +309,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="1-rewrite模块简介"><a href="#1-rewrite模块简介" class="headerlink" title="1. rewrite模块简介"></a>1. rewrite模块简介</h2><a id="more"></a><p>ngx_http_rewrite_module属于Http模块，常用功能是通过正则匹配来修改请求的URI或有选择的使某些配置生效。</p>
+        <h2 id="1-rewrite模块简介"><a href="#1-rewrite模块简介" class="headerlink" title="1. rewrite模块简介"></a>1. rewrite模块简介</h2><p>ngx_http_rewrite_module属于Http模块，常用功能是通过正则匹配来修改请求的URI或有选择的使某些配置生效。</p>
 <p>该模块的常用指令集：</p>
 <ul>
 <li>break</li>
@@ -329,6 +329,8 @@
 </ul>
 </li>
 </ul>
+<a id="more"></a>
+
 <h2 id="2-nginx配置文件解析简介"><a href="#2-nginx配置文件解析简介" class="headerlink" title="2. nginx配置文件解析简介"></a>2. nginx配置文件解析简介</h2><p>很多时候，nginx的配置文件被看作是特定语言定义的一个脚本，但是这种视角会给人一种错觉——当一个请求被Nginx处理时，指令是按配置文件中的顺序作用于该请求。实质上，配置文件中的指令在Nginx启动阶段，将被其所属的模块解析，并组合成一个特定的结构体，并在处理请求时被使用。例如，当配置文件解析完成后，所有的http模块根据配置文件内容将生成如下结构：</p>
 <p><img src="http://wiki.baidu.com/download/attachments/481109760/image2018-3-26%2022%3A21%3A12.png?version=1&modificationDate=1522074073000&api=v2" alt="万方 &gt; Nginx——rewrite模块指令执行概述 &gt; image2018-3-26 22:21:12.png"></p>
 <p>​                                                 图1</p>

@@ -258,7 +258,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-25 11:18:50" itemprop="dateModified" datetime="2019-09-25T11:18:50+08:00">2019-09-25</time>
+                <time title="修改时间：2019-09-25 11:30:54" itemprop="dateModified" datetime="2019-09-25T11:30:54+08:00">2019-09-25</time>
               </span>
             
           
@@ -301,7 +301,26 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="1-rewrite模块简介"><a href="#1-rewrite模块简介" class="headerlink" title="1. rewrite模块简介"></a>1. rewrite模块简介</h2>
+          <h2 id="1-rewrite模块简介"><a href="#1-rewrite模块简介" class="headerlink" title="1. rewrite模块简介"></a>1. rewrite模块简介</h2><p>ngx_http_rewrite_module属于Http模块，常用功能是通过正则匹配来修改请求的URI或有选择的使某些配置生效。</p>
+<p>该模块的常用指令集：</p>
+<ul>
+<li>break</li>
+<li>if</li>
+<li>return</li>
+<li>rewrite</li>
+<li>set</li>
+</ul>
+<p>指令的执行顺序：</p>
+<p>The <a href="http://nginx.org/en/docs/http/ngx_http_rewrite_module.html#break" target="_blank" rel="noopener">break</a>, <a href="http://nginx.org/en/docs/http/ngx_http_rewrite_module.html#if" target="_blank" rel="noopener">if</a>, <a href="http://nginx.org/en/docs/http/ngx_http_rewrite_module.html#return" target="_blank" rel="noopener">return</a>, <a href="http://nginx.org/en/docs/http/ngx_http_rewrite_module.html#rewrite" target="_blank" rel="noopener">rewrite</a>, and <a href="http://nginx.org/en/docs/http/ngx_http_rewrite_module.html#set" target="_blank" rel="noopener">set</a> directives are processed in the following order:</p>
+<ul>
+<li>the directives of this module specified on the <a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#server" target="_blank" rel="noopener">server</a> level are executed sequentially;</li>
+<li>repeatedly:<ul>
+<li>a <a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#location" target="_blank" rel="noopener">location</a> is searched based on a request URI;</li>
+<li>the directives of this module specified inside the found location are executed sequentially;</li>
+<li>the loop is repeated if a request URI was <a href="http://nginx.org/en/docs/http/ngx_http_rewrite_module.html#rewrite" target="_blank" rel="noopener">rewritten</a>, but not more than <a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#internal" target="_blank" rel="noopener">10 times</a>.</li>
+</ul>
+</li>
+</ul>
           <!--noindex-->
           
             <div class="post-button text-center">
