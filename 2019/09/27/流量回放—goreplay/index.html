@@ -56,7 +56,7 @@
 </script>
 
   <meta name="description" content="流量回放的意义流量回放在系统改造、Case覆盖、性能测试等领域有重要的作用。例如：在系统改造中，新系统可能采用了新的技术栈或者进行了代码重构，但他们的功能逻辑是相同的，应该对外有一致的表现。如果由人工检验，不仅工作量巨大，并且case覆盖可能不全，此时如果使用流量回放机制引流线上的真实流量到新系统，并对比双方表现，将可以安全、有效、快捷的验证新系统的正确性。 目前市面上的流量回放方案有很多，但大体">
-<meta name="keywords" content="golang,goreplay,流量回放">
+<meta name="keywords" content="goreplay,golang,流量回放">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基于goreplay的流量回放方案">
 <meta property="og:url" content="http://yoursite.com/2019/09/27/流量回放—goreplay/index.html">
@@ -65,7 +65,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://camo.githubusercontent.com/1c65a684aeb1d16343d59c3ab6d3f9d41c77c36f/68747470733a2f2f692e696d6775722e636f6d2f494e327866446d2e706e67">
 <meta property="og:image" content="http://yoursite.com/uploads/%E6%B5%81%E9%87%8F%E5%9B%9E%E6%94%BE%E2%80%94goreplay/image-20190927154535805.png">
-<meta property="og:updated_time" content="2019-09-27T08:13:26.792Z">
+<meta property="og:updated_time" content="2019-09-27T08:20:54.816Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于goreplay的流量回放方案">
 <meta name="twitter:description" content="流量回放的意义流量回放在系统改造、Case覆盖、性能测试等领域有重要的作用。例如：在系统改造中，新系统可能采用了新的技术栈或者进行了代码重构，但他们的功能逻辑是相同的，应该对外有一致的表现。如果由人工检验，不仅工作量巨大，并且case覆盖可能不全，此时如果使用流量回放机制引流线上的真实流量到新系统，并对比双方表现，将可以安全、有效、快捷的验证新系统的正确性。 目前市面上的流量回放方案有很多，但大体">
@@ -252,7 +252,7 @@
                 
               
 
-              <time title="创建时间：2019-09-27 10:43:28 / 修改时间：16:13:26" itemprop="dateCreated datePublished" datetime="2019-09-27T10:43:28+08:00">2019-09-27</time>
+              <time title="创建时间：2019-09-27 10:43:28 / 修改时间：16:20:54" itemprop="dateCreated datePublished" datetime="2019-09-27T10:43:28+08:00">2019-09-27</time>
             </span>
           
             
@@ -305,6 +305,8 @@
 <li>流量回放：可以对录制的流量，进行加工、放大等操作，回放到验证系统中</li>
 </ol>
 <p>除了大致的方案，回放工具也是五花八门，有基于nginx的、自研的、还有比较原始的复制线上日志，线下模拟的等等，不一而同。下面介绍一种基于goreplay的流量回放方案。</p>
+<a id="more"></a>
+
 <h2 id="Goreplay简介"><a href="#Goreplay简介" class="headerlink" title="Goreplay简介"></a>Goreplay简介</h2><p><a href="https://github.com/buger/goreplay" target="_blank" rel="noopener">Goreplay</a>是一款开源的网络监测工具，它可以用无侵入的方式，复制你的线上流量，并利用它进行流量回放，回放后还可以利用回放结果做进一步的分析，其工作原理如下图所示：</p>
 <p><img src="https://camo.githubusercontent.com/1c65a684aeb1d16343d59c3ab6d3f9d41c77c36f/68747470733a2f2f692e696d6775722e636f6d2f494e327866446d2e706e67" alt="goreplay工作原理"></p>
 <p>通过上图可以看到goreplay的一些特性：</p>
@@ -349,9 +351,9 @@
           
           <div class="post-tags">
             
-              <a href="/tags/golang/" rel="tag"># golang</a>
-            
               <a href="/tags/goreplay/" rel="tag"># goreplay</a>
+            
+              <a href="/tags/golang/" rel="tag"># golang</a>
             
               <a href="/tags/流量回放/" rel="tag"># 流量回放</a>
             
