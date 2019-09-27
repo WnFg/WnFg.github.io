@@ -55,31 +55,36 @@
   };
 </script>
 
-  <meta name="description" content="写作与编程">
-<meta property="og:type" content="website">
-<meta property="og:title" content="wfang&#39;s notes">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="流量回放的意义流量回放在系统改造、Case覆盖、性能测试等领域有重要的作用。例如：在系统改造中，新系统可能采用了新的技术栈或者进行了代码重构，但他们的功能逻辑是相同的，应该对外有一致的表现。如果由人工检验，不仅工作量巨大，并且case覆盖可能不全，此时如果使用流量回放机制引流线上的真实流量到新系统，并对比双方表现，将可以安全、有效、快捷的验证新系统的正确性。 目前市面上的流量回放方案有很多，但大体">
+<meta name="keywords" content="golang,goreplay,流量回放">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于goreplay的流量回放方案">
+<meta property="og:url" content="http://yoursite.com/2019/09/27/流量回放—goreplay/index.html">
 <meta property="og:site_name" content="wfang&#39;s notes">
-<meta property="og:description" content="写作与编程">
+<meta property="og:description" content="流量回放的意义流量回放在系统改造、Case覆盖、性能测试等领域有重要的作用。例如：在系统改造中，新系统可能采用了新的技术栈或者进行了代码重构，但他们的功能逻辑是相同的，应该对外有一致的表现。如果由人工检验，不仅工作量巨大，并且case覆盖可能不全，此时如果使用流量回放机制引流线上的真实流量到新系统，并对比双方表现，将可以安全、有效、快捷的验证新系统的正确性。 目前市面上的流量回放方案有很多，但大体">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://camo.githubusercontent.com/1c65a684aeb1d16343d59c3ab6d3f9d41c77c36f/68747470733a2f2f692e696d6775722e636f6d2f494e327866446d2e706e67">
+<meta property="og:image" content="http://yoursite.com/uploads/%E6%B5%81%E9%87%8F%E5%9B%9E%E6%94%BE%E2%80%94goreplay/image-20190927154535805.png">
+<meta property="og:updated_time" content="2019-09-27T08:13:26.792Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="wfang&#39;s notes">
-<meta name="twitter:description" content="写作与编程">
-  <link rel="canonical" href="http://yoursite.com/">
+<meta name="twitter:title" content="基于goreplay的流量回放方案">
+<meta name="twitter:description" content="流量回放的意义流量回放在系统改造、Case覆盖、性能测试等领域有重要的作用。例如：在系统改造中，新系统可能采用了新的技术栈或者进行了代码重构，但他们的功能逻辑是相同的，应该对外有一致的表现。如果由人工检验，不仅工作量巨大，并且case覆盖可能不全，此时如果使用流量回放机制引流线上的真实流量到新系统，并对比双方表现，将可以安全、有效、快捷的验证新系统的正确性。 目前市面上的流量回放方案有很多，但大体">
+<meta name="twitter:image" content="https://camo.githubusercontent.com/1c65a684aeb1d16343d59c3ab6d3f9d41c77c36f/68747470733a2f2f692e696d6775722e636f6d2f494e327866446d2e706e67">
+  <link rel="canonical" href="http://yoursite.com/2019/09/27/流量回放—goreplay/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome: true,
-    isPost: false,
+    isHome: false,
+    isPost: true,
     isPage: false,
     isArchive: false
   };
 </script>
 
-  <title>wfang's notes</title>
+  <title>基于goreplay的流量回放方案 | wfang's notes</title>
   <meta name="generator" content="Hexo 3.9.0">
   
 
@@ -212,12 +217,13 @@
 
           <div id="content" class="content">
             
+
   <div id="posts" class="posts-expand">
-        <article itemscope itemtype="http://schema.org/Article">
+      <article itemscope itemtype="http://schema.org/Article">
   
   
   
-  <div class="post-block home">
+  <div class="post-block post">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/27/流量回放—goreplay/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -230,9 +236,8 @@
       <meta itemprop="name" content="wfang's notes">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/09/27/流量回放—goreplay/" class="post-title-link" itemprop="url">基于goreplay的流量回放方案</a>
+        <h1 class="post-title" itemprop="name headline">基于goreplay的流量回放方案
+
           
         </h1>
 
@@ -293,7 +298,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="流量回放的意义"><a href="#流量回放的意义" class="headerlink" title="流量回放的意义"></a>流量回放的意义</h2><p>流量回放在系统改造、Case覆盖、性能测试等领域有重要的作用。例如：在系统改造中，新系统可能采用了新的技术栈或者进行了代码重构，但他们的功能逻辑是相同的，应该对外有一致的表现。如果由人工检验，不仅工作量巨大，并且case覆盖可能不全，此时如果使用流量回放机制引流线上的真实流量到新系统，并对比双方表现，将可以安全、有效、快捷的验证新系统的正确性。</p>
+        <h2 id="流量回放的意义"><a href="#流量回放的意义" class="headerlink" title="流量回放的意义"></a>流量回放的意义</h2><p>流量回放在系统改造、Case覆盖、性能测试等领域有重要的作用。例如：在系统改造中，新系统可能采用了新的技术栈或者进行了代码重构，但他们的功能逻辑是相同的，应该对外有一致的表现。如果由人工检验，不仅工作量巨大，并且case覆盖可能不全，此时如果使用流量回放机制引流线上的真实流量到新系统，并对比双方表现，将可以安全、有效、快捷的验证新系统的正确性。</p>
 <p>目前市面上的流量回放方案有很多，但大体框架是一致的，一般而言流量回放可以分为两个步骤：</p>
 <ol>
 <li>流量录制：将线上流量以文件或其它存储方式保留起来，供后续分析使用</li>
@@ -314,388 +319,85 @@
 
 <p>更多的详情，包括协议格式参考：<a href="https://github.com/buger/goreplay/wiki/Middleware" target="_blank" rel="noopener">https://github.com/buger/goreplay/wiki/Middleware</a></p>
 <h3 id="请求的过滤与重写"><a href="#请求的过滤与重写" class="headerlink" title="请求的过滤与重写"></a>请求的过滤与重写</h3><h3 id="回放流量速率控制"><a href="#回放流量速率控制" class="headerlink" title="回放流量速率控制"></a>回放流量速率控制</h3>
-        
-      
     </div>
 
     
     
     
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/25/golang学习系列2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="WFang">
-      <meta itemprop="description" content="写作与编程">
-      <meta itemprop="image" content="/uploads/pexels-photo-783944.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="wfang's notes">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/09/25/golang学习系列2/" class="post-title-link" itemprop="url">golang学习系列2——内存管理</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-09-25 23:13:54 / 修改时间：23:31:34" itemprop="dateCreated datePublished" datetime="2019-09-25T23:13:54+08:00">2019-09-25</time>
-            </span>
-          
-            
-
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/golanng/" itemprop="url" rel="index"><span itemprop="name">golanng</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
         
       
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2019/09/25/golang学习系列2/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/09/25/golang学习系列2/" itemprop="commentCount"></span></a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>golang的内存管理方式是基于<a href="https://gperftools.github.io/gperftools/tcmalloc.html" target="_blank" rel="noopener">TCMalloc</a>设计的。</p>
-<h3 id="TCMalloc概述"><a href="#TCMalloc概述" class="headerlink" title="TCMalloc概述"></a>TCMalloc概述</h3><h4 id="内存分配"><a href="#内存分配" class="headerlink" title="内存分配"></a>内存分配</h4><p>TCMalloc为每个线程分配一个thread-cache，该结构用于分配小对象内存（&lt;256K），其组织方式按照对象大小分类，当分配小对象时，直接从线程本地缓存中取得相应的对象，消除线程间竞争，如下所示：</p>
-<img src="/uploads/golang学习系列2/image-20190925231553964.png" alt="image-20190925231553964" style="zoom:50%;">
-
-<p>​                                                                                      thread-cache</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/09/25/golang学习系列2/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/25/golang学习系列1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="WFang">
-      <meta itemprop="description" content="写作与编程">
-      <meta itemprop="image" content="/uploads/pexels-photo-783944.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="wfang's notes">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/09/25/golang学习系列1/" class="post-title-link" itemprop="url">golang学习系列1</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-09-25 22:32:24 / 修改时间：22:39:58" itemprop="dateCreated datePublished" datetime="2019-09-25T22:32:24+08:00">2019-09-25</time>
-            </span>
-          
-            
-
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/golanng/" itemprop="url" rel="index"><span itemprop="name">golanng</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-        
-      
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2019/09/25/golang学习系列1/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/09/25/golang学习系列1/" itemprop="commentCount"></span></a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="编译与调试"><a href="#编译与调试" class="headerlink" title="编译与调试"></a>编译与调试</h2><p>作为一门静态编译型语言，其会将源码编译为ELF文件，golang默认使用静态链接，因此一般来说，golang编译后的可执行文件，外部依赖较少，有利于环境部署。</p>
-<p>为了便于调试，可以在编译时给与编译器相关指令，关闭内联及优化，go build -gcflags “-l -N” test.go。</p>
-<p>可以使用GDB进行相应的调试，golang生成的函数名一般为包名+函数名，例如：</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/09/25/golang学习系列1/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/24/Nginx Rewrite模块学习/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="WFang">
-      <meta itemprop="description" content="写作与编程">
-      <meta itemprop="image" content="/uploads/pexels-photo-783944.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="wfang's notes">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2019/09/24/Nginx Rewrite模块学习/" class="post-title-link" itemprop="url">Nginx Rewrite模块学习</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2019-09-24 23:19:58" itemprop="dateCreated datePublished" datetime="2019-09-24T23:19:58+08:00">2019-09-24</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-25 11:30:54" itemprop="dateModified" datetime="2019-09-25T11:30:54+08:00">2019-09-25</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Nginx/" itemprop="url" rel="index"><span itemprop="name">Nginx</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-        
-      
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2019/09/24/Nginx Rewrite模块学习/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/09/24/Nginx Rewrite模块学习/" itemprop="commentCount"></span></a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="1-rewrite模块简介"><a href="#1-rewrite模块简介" class="headerlink" title="1. rewrite模块简介"></a>1. rewrite模块简介</h2><p>ngx_http_rewrite_module属于Http模块，常用功能是通过正则匹配来修改请求的URI或有选择的使某些配置生效。</p>
-<p>该模块的常用指令集：</p>
-<ul>
-<li>break</li>
-<li>if</li>
-<li>return</li>
-<li>rewrite</li>
-<li>set</li>
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>WFang</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yoursite.com/2019/09/27/流量回放—goreplay/" title="基于goreplay的流量回放方案">http://yoursite.com/2019/09/27/流量回放—goreplay/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
 </ul>
-<p>指令的执行顺序：</p>
-<p>The <a href="http://nginx.org/en/docs/http/ngx_http_rewrite_module.html#break" target="_blank" rel="noopener">break</a>, <a href="http://nginx.org/en/docs/http/ngx_http_rewrite_module.html#if" target="_blank" rel="noopener">if</a>, <a href="http://nginx.org/en/docs/http/ngx_http_rewrite_module.html#return" target="_blank" rel="noopener">return</a>, <a href="http://nginx.org/en/docs/http/ngx_http_rewrite_module.html#rewrite" target="_blank" rel="noopener">rewrite</a>, and <a href="http://nginx.org/en/docs/http/ngx_http_rewrite_module.html#set" target="_blank" rel="noopener">set</a> directives are processed in the following order:</p>
-<ul>
-<li>the directives of this module specified on the <a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#server" target="_blank" rel="noopener">server</a> level are executed sequentially;</li>
-<li>repeatedly:<ul>
-<li>a <a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#location" target="_blank" rel="noopener">location</a> is searched based on a request URI;</li>
-<li>the directives of this module specified inside the found location are executed sequentially;</li>
-<li>the loop is repeated if a request URI was <a href="http://nginx.org/en/docs/http/ngx_http_rewrite_module.html#rewrite" target="_blank" rel="noopener">rewritten</a>, but not more than <a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#internal" target="_blank" rel="noopener">10 times</a>.</li>
-</ul>
-</li>
-</ul>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/09/24/Nginx Rewrite模块学习/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
+</div>
 
-    
-    
-    
+      
+
       <footer class="post-footer">
-          <div class="post-eof"></div>
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/golang/" rel="tag"># golang</a>
+            
+              <a href="/tags/goreplay/" rel="tag"># goreplay</a>
+            
+              <a href="/tags/流量回放/" rel="tag"># 流量回放</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/09/25/golang学习系列2/" rel="next" title="golang学习系列2——内存管理">
+                  <i class="fa fa-chevron-left"></i> golang学习系列2——内存管理
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
         
       </footer>
+    
   </div>
   
   
   
   </article>
 
-    
   </div>
-
-  
 
 
           </div>
           
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
 
         </div>
           
@@ -710,6 +412,11 @@
 
   <aside class="sidebar">
     <div class="sidebar-inner">
+        
+        
+        
+        
+      
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
@@ -722,6 +429,8 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#流量回放的意义"><span class="nav-number">1.</span> <span class="nav-text">流量回放的意义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Goreplay简介"><span class="nav-number">2.</span> <span class="nav-text">Goreplay简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Goreplay使用"><span class="nav-number">3.</span> <span class="nav-text">Goreplay使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#捕获http请求"><span class="nav-number">3.1.</span> <span class="nav-text">捕获http请求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义中间件"><span class="nav-number">3.2.</span> <span class="nav-text">自定义中间件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求的过滤与重写"><span class="nav-number">3.3.</span> <span class="nav-text">请求的过滤与重写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回放流量速率控制"><span class="nav-number">3.4.</span> <span class="nav-text">回放流量速率控制</span></a></li></ol></li></ol></div>
+        
       </div>
       <!--/noindex-->
 
@@ -910,6 +619,27 @@
   }
   // defer loading until the whole page loading is completed
   window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "http://yoursite.com/2019/09/27/流量回放—goreplay/";
+    this.page.identifier = "2019/09/27/流量回放—goreplay/";
+    this.page.title = '基于goreplay的流量回放方案';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://wnfg.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+  
 </script>
 
 </body>
