@@ -63,15 +63,15 @@
 <meta property="og:site_name" content="wfang&#39;s notes">
 <meta property="og:description" content="程序性能分析sampling profile这个名词，在程序性能分析中经常出现，一般可以翻译做采样分析：根据特定的事件点，对程序调用栈进行采样，并进行后续的分析。例如：根据一定频率采样分析cpu使用 或 根据内存分配点采样分析内存使用情况。 Golang Profilesgolang的工具包中提供了一个叫做pprof的工具，可以用来操作golang生成的profile文件。而对于profile文件">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://yoursite.com/.com//wanfang02/HexoBlog/source/uploads/golang学习——pprof/image-20191017215050144.png">
-<meta property="og:image" content="http://yoursite.com/.com//wanfang02/HexoBlog/source/uploads/golang学习——pprof/image-20191017215505780.png">
-<meta property="og:image" content="http://yoursite.com/.com//wanfang02/HexoBlog/source/uploads/golang学习——pprof/image-20191017220035869.png">
-<meta property="og:image" content="http://yoursite.com/.com//wanfang02/HexoBlog/source/uploads/golang学习——pprof/image-20191017220801364.png">
-<meta property="og:updated_time" content="2019-10-17T14:09:41.505Z">
+<meta property="og:image" content="http://yoursite.com/uploads/golang学习——pprof/image-20191017215050144.png">
+<meta property="og:image" content="http://yoursite.com/uploads/golang学习——pprof/image-20191017215505780.png">
+<meta property="og:image" content="http://yoursite.com/uploads/golang学习——pprof/image-20191017220035869.png">
+<meta property="og:image" content="http://yoursite.com/uploads/golang学习——pprof/image-20191017220801364.png">
+<meta property="og:updated_time" content="2019-10-17T14:15:21.001Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="golang性能分析">
 <meta name="twitter:description" content="程序性能分析sampling profile这个名词，在程序性能分析中经常出现，一般可以翻译做采样分析：根据特定的事件点，对程序调用栈进行采样，并进行后续的分析。例如：根据一定频率采样分析cpu使用 或 根据内存分配点采样分析内存使用情况。 Golang Profilesgolang的工具包中提供了一个叫做pprof的工具，可以用来操作golang生成的profile文件。而对于profile文件">
-<meta name="twitter:image" content="http://yoursite.com/.com//wanfang02/HexoBlog/source/uploads/golang学习——pprof/image-20191017215050144.png">
+<meta name="twitter:image" content="http://yoursite.com/uploads/golang学习——pprof/image-20191017215050144.png">
   <link rel="canonical" href="http://yoursite.com/2019/10/08/golang学习——pprof/">
 
 
@@ -265,7 +265,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-17 22:09:41" itemprop="dateModified" datetime="2019-10-17T22:09:41+08:00">2019-10-17</time>
+                <time title="修改时间：2019-10-17 22:15:21" itemprop="dateModified" datetime="2019-10-17T22:15:21+08:00">2019-10-17</time>
               </span>
             
           
@@ -347,7 +347,7 @@
 
 <p>执行./asd -cpuprofile cpu.prof -memprofile mem.prof，生成cpu.prof和mem.prof。</p>
 <h3 id="top"><a href="#top" class="headerlink" title="top"></a>top</h3><p>使用go tool pprof分析生成的profile文件，go tool pprof cpu.prof</p>
-<img src="/.com//wanfang02/HexoBlog/source/uploads/golang学习——pprof/image-20191017215050144.png" alt="image-20191017215050144" style="zoom:50%;">
+<img src="/uploads/golang学习——pprof/image-20191017215050144.png" alt="image-20191017215050144" style="zoom:50%;">
 
 <p>top统计了每个函数的”重量”累积，这里的重量是cpu时间。指标含义：</p>
 <ul>
@@ -355,11 +355,11 @@
 <li>Cum：该函数及其所调用的子函数耗费的cpu时间</li>
 <li>Sum：前n行的flat加和</li>
 </ul>
-<h3 id="traces"><a href="#traces" class="headerlink" title="traces"></a>traces</h3><img src="/.com//wanfang02/HexoBlog/source/uploads/golang学习——pprof/image-20191017215505780.png" alt="image-20191017215505780" style="zoom:50%;">
+<h3 id="traces"><a href="#traces" class="headerlink" title="traces"></a>traces</h3><img src="/uploads/golang学习——pprof/image-20191017215505780.png" alt="image-20191017215505780" style="zoom:50%;">
 
 <p>traces展示了调用栈的”重量”累积</p>
 <h3 id="生成调用图"><a href="#生成调用图" class="headerlink" title="生成调用图"></a>生成调用图</h3><p>调用图的格式有很多，这里生成ps格式，执行ps命令，生成如下图：</p>
-<img src="/.com//wanfang02/HexoBlog/source/uploads/golang学习——pprof/image-20191017220035869.png" alt="image-20191017220035869" style="zoom:100%;">
+<img src="/uploads/golang学习——pprof/image-20191017220035869.png" alt="image-20191017220035869" style="zoom:100%;">
 
 
 
@@ -375,7 +375,7 @@
 <li>inuse_objects：还没有释放的对象个数</li>
 <li>alloc_objects：从始至终分配的对象个数</li>
 </ul>
-<img src="/.com//wanfang02/HexoBlog/source/uploads/golang学习——pprof/image-20191017220801364.png" alt="image-20191017220801364" style="zoom:50%;">
+<img src="/uploads/golang学习——pprof/image-20191017220801364.png" alt="image-20191017220801364" style="zoom:50%;">
 
 <p>例如上图，使用samples指标分析cpu.prof文件</p>
 
