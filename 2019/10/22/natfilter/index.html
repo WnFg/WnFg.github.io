@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Netfilter框架 Netfilter is a framework for packet manipulation and filtering. The framework provides access to packets through five hooks in the Linux kernel at key points in packet processing. The hook">
+<meta name="keywords" content="计算机网络,netfilter">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux——NAT原理">
+<meta property="og:url" content="http://yoursite.com/2019/10/22/natfilter/index.html">
+<meta property="og:site_name" content="wfang&#39;s notes">
+<meta property="og:description" content="Netfilter框架 Netfilter is a framework for packet manipulation and filtering. The framework provides access to packets through five hooks in the Linux kernel at key points in packet processing. The hook">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/.com//wanfang02/HexoBlog/source/uploads/natfilter/fib_rule.gif">
+<meta property="og:updated_time" content="2019-10-22T15:38:41.857Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux——NAT原理">
+<meta name="twitter:description" content="Netfilter框架 Netfilter is a framework for packet manipulation and filtering. The framework provides access to packets through five hooks in the Linux kernel at key points in packet processing. The hook">
+<meta name="twitter:image" content="http://yoursite.com/.com//wanfang02/HexoBlog/source/uploads/natfilter/fib_rule.gif">
+  <link rel="canonical" href="http://yoursite.com/2019/10/22/natfilter/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Linux——NAT原理 | wfang's notes</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">wfang's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">record something</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/22/natfilter/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="WFang">
+      <meta itemprop="description" content="写作与编程">
+      <meta itemprop="image" content="/uploads/pexels-photo-783944.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wfang's notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Linux——NAT原理
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-22 23:35:36 / 修改时间：23:38:41" itemprop="dateCreated datePublished" datetime="2019-10-22T23:35:36+08:00">2019-10-22</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/计算机网络/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2019/10/22/natfilter/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/10/22/natfilter/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Netfilter框架"><a href="#Netfilter框架" class="headerlink" title="Netfilter框架"></a>Netfilter框架</h2><blockquote>
+<p>Netfilter is a framework for packet manipulation and filtering. The framework provides access to packets through five hooks in the Linux kernel at key points in packet processing. The hooks exist for both IPv4 and IPv6. Figure 1 shows in which order the Netfilter hooks are called when processing an IPv4 packet. The return value from a Netfilter hook must be one of five options: NF_ACCEPT, NF_DROP, NF_STOLEN, NF_QUEUE, NF_REPEAT. The first two options accept or drop a packet, respectively. If multiple functions are attached to a hook, the packet will be dropped if a single function returns NF_DROP. The return value NF_STOLEN indicates that a packet has been consumed by the hook function and further processing by other functions attached to the hook is not possible. NF_QUEUE indicates that the packet should be inserted into a queue, and NF_REPEAT indicates that the hook function should be called again. When functions are registered to Netfilter hooks, a priority of the functions is given. This priority determines in which order the functions attached to the same hook are called. </p>
+</blockquote>
+<a id="more"></a>
+
+<h2 id="Netfilter执行流程"><a href="#Netfilter执行流程" class="headerlink" title="Netfilter执行流程"></a>Netfilter执行流程</h2><p>![network layer](/uploads/natfilter/network layer.png)</p>
+<p>该图描述网络层的工作流程，其中netfilter嵌入到网络层的5个钩子（链）。</p>
+<h3 id="路由规则"><a href="#路由规则" class="headerlink" title="路由规则"></a>路由规则</h3><blockquote>
+<p>The default parameters used for calculating routes are destination address and out interface. Routing in Linux is carried out by either rule based routing tables or default routing tables. Rule based routing tables provide flexibility to resolve routes (destination address, out device) based on multiple parameters e.g. source address etc apart from the default paramters. The functionality of route lookup is implemented in ip_fib.c and ip_fib.h.  If this functionality is disabled in the kernel configuration, then the two default tables, local and main are used by default. </p>
+<p><strong>1</strong>. <strong>Route Cache:</strong><br>A route cache, based on the previous transmissions, is maintained to quickly resolve the routes for outing packets.  The route cache is searched by using a “hash code” composed of the destination address, source address, rt_hash_mask and tos field values. </p>
+<p>The route cache search is carried out in the __ip_route_output_key()  function. If the search is successful, it returns a pointer to rtable structure immediately. A reference counter to the route cache entry is incremented every time it is successfully searched. As long as the reference count is positive, the entry is not deleted. </p>
+<p>If there is no route in the route cache, the __ip_route_output_key() function calls __ip_route_ip_slow() function to search the forwarding-information base (FIB) for a possible route for the packet. </p>
+<p><strong>2. Ip_route_output_slow (FIB lookup process)</strong></p>
+<p>When a route cannot be resolved through the route cache, ip_route_out_slow is used to find a route for the outgoing packet.</p>
+<p>This function also returns a pointer to routing table entry. Pointers to struct net and struct flowi4 are given as arguments. Information about the source address, destination address, possible output interface is gathered from the flowi4 structure passed as an argument. The type of service,  input interface (as loopback by default) and and scope of the flow (RT_SCOPE_LINK, RT_SCOPE_UNIVERSE) is gathered from the “net” argument. </p>
+<p>If  the source address of the packet is available in the flowi4 argument , the out device is found through __ip_dev_find() function, which returns the first device matching the source address. This function also uses a hashtable for finding the net device.  If it fails to find a relevant out_dev using hash tables, it uses the FIB local table as the last resort. For unicast traffic, it is critical to find the out device. If the function fails to return a valid device for given source address, it returns with an error message.</p>
+<p>If the source address is not available in flowi4 structure, but an ifindex is given, the function searches through another hash list of interface index to find the relevant device. </p>
+<p>If the out_dev is still unresolved or if it is not running (!IFF_UP),  the function does not proceed further and returns with an error message.</p>
+<p>In case there is not destination address available in the flowi4 structure, the destination address is set to the source address of the packet. If that is also not available, both the source and destination addresses are set to the LOOP_BACK address. At this point, the FIB lookup is performed.</p>
+<p><strong>Fib_lookup:</strong></p>
+<p>This is the main algorithm behind resolving routes for outgoing packets. It provides the support for rule based routing providing flexible decision making. Several routing tables are used to find the route for a datagram.  Selectors and type of rule decide if and how a packet should be transformed.</p>
+<p>These rules are represented in a form of a list in ascending priority.  Three rules, “ local”, “ main” and “default” are defined by default.</p>
+<p><img src="/.com//wanfang02/HexoBlog/source/uploads/natfilter/fib_rule.gif" alt="fib_rule"></p>
+</blockquote>
+<h2 id="Connect-Track-CT-模块"><a href="#Connect-Track-CT-模块" class="headerlink" title="Connect Track(CT)模块"></a>Connect Track(CT)模块</h2><p>CT模块负责跟踪连接情况，虽然NAT模块和CT模块是两个单独的模块，但是NAT模块需要依赖于CT模块。</p>
+<h2 id="NAT模块"><a href="#NAT模块" class="headerlink" title="NAT模块"></a>NAT模块</h2><p>ip_do_table table函数入口</p>
+<p>nf_nat_l3proto_ipv4.c nat模块源码</p>
+<p>struct net，抽象了linux的网络结构，其中net-&gt;nf描述netfilter，nf_register_net_hooks 向netfilter中的某个链上注册hook</p>
+<p>iptable中的每张表，注册在几个链上，就注册几个handler处理规则</p>
+<p>packet_type 包类型，包含了该包的处理handler</p>
+<p>af_inet.c::inet_init  初始化网络栈，包括注册packet_type</p>
+<p>flowi4 描述了包的流向，其中的信息用于route后，构造ip头</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>WFang</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yoursite.com/2019/10/22/natfilter/" title="Linux——NAT原理">http://yoursite.com/2019/10/22/natfilter/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+</div>
+
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/计算机网络/" rel="tag"># 计算机网络</a>
+            
+              <a href="/tags/netfilter/" rel="tag"># netfilter</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/10/08/golang学习——pprof/" rel="next" title="golang性能分析">
+                  <i class="fa fa-chevron-left"></i> golang性能分析
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2019/10/22/innodb内存管理/" rel="prev" title="Innodb内存管理">
+                  Innodb内存管理 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Netfilter框架"><span class="nav-number">1.</span> <span class="nav-text">Netfilter框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Netfilter执行流程"><span class="nav-number">2.</span> <span class="nav-text">Netfilter执行流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#路由规则"><span class="nav-number">2.1.</span> <span class="nav-text">路由规则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Connect-Track-CT-模块"><span class="nav-number">3.</span> <span class="nav-text">Connect Track(CT)模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NAT模块"><span class="nav-number">4.</span> <span class="nav-text">NAT模块</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/uploads/pexels-photo-783944.jpeg"
+      alt="WFang">
+  <p class="site-author-name" itemprop="name">WFang</p>
+  <div class="site-description" itemprop="description">写作与编程</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/wnfg" title="GitHub &rarr; https://github.com/wnfg" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://www.zhihu.com/people/wan-fang-71-11/activities" title="知乎 &rarr; https://www.zhihu.com/people/wan-fang-71-11/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>知乎</a>
+      </span>
+    
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    
+  
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WFang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://wnfg.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "http://yoursite.com/2019/10/22/natfilter/";
+    this.page.identifier = "2019/10/22/natfilter/";
+    this.page.title = 'Linux——NAT原理';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://wnfg.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+</body>
+</html>

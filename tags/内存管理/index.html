@@ -55,19 +55,17 @@
   };
 </script>
 
-  <meta name="description" content="分布式状态一致性首先明确这里探讨的一致性定义：  数据库中的一致性定义，主要指对数据的操作（事务）要满足数据集上的约束，例如外键、唯一键等。  而这里的一致性主要是指 分布式系统中多节点间访问数据（或数据副本）的一致性问题。   对于2中的一致性问题，在数据库领域中实际表现为『隔离性』，即 对不同的工作线程而言，事务操作的可见性顺序。 对于”一致性”这个名词，在中文世界里一直都有严重的混用情况，而">
-<meta name="keywords" content="分布式一致性,复制状态机">
+  <meta name="description" content="写作与编程">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Raft协议">
-<meta property="og:url" content="http://yoursite.com/drafts/分布式一致性协议——Raft协议.html">
+<meta property="og:title" content="wfang&#39;s notes">
+<meta property="og:url" content="http://yoursite.com/tags/内存管理/index.html">
 <meta property="og:site_name" content="wfang&#39;s notes">
-<meta property="og:description" content="分布式状态一致性首先明确这里探讨的一致性定义：  数据库中的一致性定义，主要指对数据的操作（事务）要满足数据集上的约束，例如外键、唯一键等。  而这里的一致性主要是指 分布式系统中多节点间访问数据（或数据副本）的一致性问题。   对于2中的一致性问题，在数据库领域中实际表现为『隔离性』，即 对不同的工作线程而言，事务操作的可见性顺序。 对于”一致性”这个名词，在中文世界里一直都有严重的混用情况，而">
+<meta property="og:description" content="写作与编程">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-22T06:31:41.666Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Raft协议">
-<meta name="twitter:description" content="分布式状态一致性首先明确这里探讨的一致性定义：  数据库中的一致性定义，主要指对数据的操作（事务）要满足数据集上的约束，例如外键、唯一键等。  而这里的一致性主要是指 分布式系统中多节点间访问数据（或数据副本）的一致性问题。   对于2中的一致性问题，在数据库领域中实际表现为『隔离性』，即 对不同的工作线程而言，事务操作的可见性顺序。 对于”一致性”这个名词，在中文世界里一直都有严重的混用情况，而">
-  <link rel="canonical" href="http://yoursite.com/drafts/分布式一致性协议——Raft协议">
+<meta name="twitter:title" content="wfang&#39;s notes">
+<meta name="twitter:description" content="写作与编程">
+  <link rel="canonical" href="http://yoursite.com/tags/内存管理/">
 
 
 <script id="page-configurations">
@@ -76,12 +74,12 @@
     sidebar: "",
     isHome: false,
     isPost: false,
-    isPage: true,
+    isPage: false,
     isArchive: false
   };
 </script>
 
-  <title>Raft协议 | wfang's notes</title>
+  <title>标签: 内存管理 | wfang's notes</title>
   <meta name="generator" content="Hexo 3.9.0">
   
 
@@ -233,70 +231,64 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
-    
-    
-    <div class="post-block page">
-      <header class="post-header">
+  
+  
+  
+  <div class="post-block tag">
+    <div id="posts" class="posts-collapse">
+      <div class="collection-title">
+        <h1 class="collection-header">内存管理<small>标签</small>
+        </h1>
+      </div>
 
-<h1 class="post-title" itemprop="name headline">Raft协议
+      
 
-</h1>
-
-<div class="post-meta">
+  
   
 
-</div>
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
-        
-          <h2 id="分布式状态一致性"><a href="#分布式状态一致性" class="headerlink" title="分布式状态一致性"></a>分布式状态一致性</h2><p>首先明确这里探讨的一致性定义：</p>
-<ol>
-<li><p>数据库中的一致性定义，主要指对数据的操作（事务）要满足数据集上的约束，例如外键、唯一键等。</p>
-</li>
-<li><p>而这里的一致性主要是指 分布式系统中多节点间访问数据（或数据副本）的一致性问题。</p>
-</li>
-</ol>
-<p>对于2中的一致性问题，在数据库领域中实际表现为『隔离性』，即 对不同的工作线程而言，事务操作的可见性顺序。</p>
-<p>对于”一致性”这个名词，在中文世界里一直都有严重的混用情况，而博客以及许多书籍上各种混乱的使用，含糊不清的描述，使得看客往往是一头雾水，还会被误导。下面讨论不同场景下的『一致性』。</p>
-<h3 id="Consistency-Model"><a href="#Consistency-Model" class="headerlink" title="Consistency Model"></a>Consistency Model</h3><blockquote>
-<p>In <a href="https://en.wikipedia.org/wiki/Computer_science" target="_blank" rel="noopener">computer science</a>, <strong>consistency models</strong> are used in <a href="https://en.wikipedia.org/wiki/Distributed_computing" target="_blank" rel="noopener">distributed systems</a> like <a href="https://en.wikipedia.org/wiki/Distributed_shared_memory" target="_blank" rel="noopener">distributed shared memory</a> systems or distributed data stores (such as a <a href="https://en.wikipedia.org/wiki/Filesystem" target="_blank" rel="noopener">filesystems</a>, <a href="https://en.wikipedia.org/wiki/Database" target="_blank" rel="noopener">databases</a>, <a href="https://en.wikipedia.org/wiki/Optimistic_replication" target="_blank" rel="noopener">optimistic replication</a> systems or <a href="https://en.wikipedia.org/wiki/Web_caching" target="_blank" rel="noopener">web caching</a>). The system is said to support a given model if operations on memory follow specific rules. The data consistency model specifies a contract between programmer and system, wherein the system guarantees that if the programmer follows the rules, memory will be <a href="https://en.wikipedia.org/wiki/Consistent" target="_blank" rel="noopener">consistent</a> and the results of reading, writing, or updating memory will be predictable. </p>
-<p><a href="https://en.wikipedia.org/wiki/Consistency_model" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Consistency_model</a></p>
-</blockquote>
-<p>从上述的描述来看，一致性模型是一种合约，它规定了程序员如果遵循某种规定编写程序，</p>
-<h3 id="Coherence"><a href="#Coherence" class="headerlink" title="Coherence"></a>Coherence</h3><h3 id="Consensus"><a href="#Consensus" class="headerlink" title="Consensus"></a>Consensus</h3><p>这个名词，最好是翻译为”共识”比较合适。</p>
-
-        
-      </div>
-      
-      
-      
+  
+    
+    <div class="collection-year">
+      <h1 class="collection-header">2019</h1>
     </div>
-    
+  
 
-    
-    
-    
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
+          <a class="post-title-link" href="/2019/10/22/innodb内存管理/" itemprop="url">
+            <span itemprop="name">Innodb内存管理</span>
+          </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2019-10-22T23:39:35+08:00"
+              content="2019-10-22">
+          10-22
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
+
+    </div>
   </div>
+  
+  
+  
+
+  
+
 
 
           </div>
           
-    
-    
-  <div class="comments" id="comments">
-    <div id="disqus_thread">
-      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-    </div>
-  </div>
-  
-  
 
         </div>
           
@@ -311,11 +303,6 @@
 
   <aside class="sidebar">
     <div class="sidebar-inner">
-        
-        
-        
-        
-      
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
@@ -328,8 +315,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式状态一致性"><span class="nav-number">1.</span> <span class="nav-text">分布式状态一致性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Consistency-Model"><span class="nav-number">1.1.</span> <span class="nav-text">Consistency Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Coherence"><span class="nav-number">1.2.</span> <span class="nav-text">Coherence</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Consensus"><span class="nav-number">1.3.</span> <span class="nav-text">Consensus</span></a></li></ol></li></ol></div>
-        
       </div>
       <!--/noindex-->
 
@@ -542,27 +527,6 @@
   }
   // defer loading until the whole page loading is completed
   window.addEventListener('load', loadCount, false);
-</script>
-<script>
-  function disqus_config() {
-    this.page.url = "http://yoursite.com/drafts/分布式一致性协议——Raft协议.html";
-    this.page.identifier = "drafts/分布式一致性协议——Raft协议.html";
-    this.page.title = 'Raft协议';};
-  function loadComments() {
-    if (window.DISQUS) {
-      DISQUS.reset({
-        reload: true,
-        config: disqus_config
-      });
-    } else {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://wnfg.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', '' + +new Date());
-      (d.head || d.body).appendChild(s);
-    }
-  }
-    window.addEventListener('load', loadComments, false);
-  
 </script>
 
 </body>
