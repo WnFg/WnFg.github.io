@@ -55,22 +55,29 @@
   };
 </script>
 
-  <meta name="description" content="Netfilter框架 Netfilter is a framework for packet manipulation and filtering. The framework provides access to packets through five hooks in the Linux kernel at key points in packet processing. The hook">
-<meta name="keywords" content="计算机网络,netfilter">
+  <meta name="description" content="容器技术的核心是linux提供的两种隔离技术：NameSpace ，Cgroup ‌ NameSpace ‌ namespace是对操作系统这类软件资源的隔离，更形象的说namespace改变了进程看待自身存在环境的视角。 ‌ 命名空间有6种分类(实际是7种)，定义了操作系统不同资源的隔离：  命名空间分类Enter a caption for this image (optional) ‌ 查看">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux——NAT原理">
-<meta property="og:url" content="http://yoursite.com/2019/10/22/natfilter/index.html">
+<meta property="og:title" content="wfang&#39;s notes">
+<meta property="og:url" content="http://yoursite.com/2019/10/22/容器技术原理/index.html">
 <meta property="og:site_name" content="wfang&#39;s notes">
-<meta property="og:description" content="Netfilter框架 Netfilter is a framework for packet manipulation and filtering. The framework provides access to packets through five hooks in the Linux kernel at key points in packet processing. The hook">
+<meta property="og:description" content="容器技术的核心是linux提供的两种隔离技术：NameSpace ，Cgroup ‌ NameSpace ‌ namespace是对操作系统这类软件资源的隔离，更形象的说namespace改变了进程看待自身存在环境的视角。 ‌ 命名空间有6种分类(实际是7种)，定义了操作系统不同资源的隔离：  命名空间分类Enter a caption for this image (optional) ‌ 查看">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://yoursite.com/uploads/natfilter/network_layer.png">
-<meta property="og:image" content="http://yoursite.com/uploads/natfilter/fib_rule.gif">
-<meta property="og:updated_time" content="2019-10-22T15:47:17.893Z">
+<meta property="og:image" content="https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LfD58EbdYeg5SpfVrCe%2F-LfIS1JjlD2-D9pJ1e2q%2F-LfIS8t3h5lrWGT71faf%2Fimage.png?alt=media&token=5686febb-8c9c-40d0-ba51-ed9253a549c8">
+<meta property="og:image" content="https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LfD58EbdYeg5SpfVrCe%2F-LfIS1JjlD2-D9pJ1e2q%2F-LfISDnwYE0lV-e7hgyO%2Fimage.png?alt=media&token=1f1024ba-5c9a-45c6-8841-ba2b38dd52a3">
+<meta property="og:image" content="https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LfD58EbdYeg5SpfVrCe%2F-LfIS1JjlD2-D9pJ1e2q%2F-LfISNm0Rji4OZsyMe37%2Fimage.png?alt=media&token=d5b888ba-f528-40f4-8fab-9baf34d2e796">
+<meta property="og:image" content="https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LfD58EbdYeg5SpfVrCe%2F-LfIS1JjlD2-D9pJ1e2q%2F-LfISR4gGh5geyCIF50a%2Fimage.png?alt=media&token=112bf18a-6536-4da4-80ab-ed807ca7b24f">
+<meta property="og:image" content="https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LfD58EbdYeg5SpfVrCe%2F-LfIS1JjlD2-D9pJ1e2q%2F-LfISVmSeNECzNZOCDQL%2Fimage.png?alt=media&token=0db013ac-1eff-447a-afdb-e63b7924ee32">
+<meta property="og:image" content="https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LfD58EbdYeg5SpfVrCe%2F-LfIS1JjlD2-D9pJ1e2q%2F-LfISYoC1_ZlckkTs6pR%2Fimage.png?alt=media&token=68cd7a36-b94b-42de-ab99-dbc8b6366e96">
+<meta property="og:image" content="https://www.backblaze.com/blog/wp-content/uploads/2018/06/vms.png">
+<meta property="og:image" content="https://www.backblaze.com/blog/wp-content/uploads/2018/06/containers.png">
+<meta property="og:image" content="http://wiki.baidu.com/download/attachments/754992175/image2019-5-17_10-34-59.png?version=1&modificationDate=1558060499000&api=v2">
+<meta property="og:image" content="https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LfD58EbdYeg5SpfVrCe%2F-LfISyCmT54mSc-HS2ft%2F-LfIT0eAUW_Iq6ZjDyFd%2Fimage.png?alt=media&token=6e8a8bc2-c4c5-40d1-9306-d9db370ade65">
+<meta property="og:updated_time" content="2019-10-22T15:44:15.090Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Linux——NAT原理">
-<meta name="twitter:description" content="Netfilter框架 Netfilter is a framework for packet manipulation and filtering. The framework provides access to packets through five hooks in the Linux kernel at key points in packet processing. The hook">
-<meta name="twitter:image" content="http://yoursite.com/uploads/natfilter/network_layer.png">
-  <link rel="canonical" href="http://yoursite.com/2019/10/22/natfilter/">
+<meta name="twitter:title" content="wfang&#39;s notes">
+<meta name="twitter:description" content="容器技术的核心是linux提供的两种隔离技术：NameSpace ，Cgroup ‌ NameSpace ‌ namespace是对操作系统这类软件资源的隔离，更形象的说namespace改变了进程看待自身存在环境的视角。 ‌ 命名空间有6种分类(实际是7种)，定义了操作系统不同资源的隔离：  命名空间分类Enter a caption for this image (optional) ‌ 查看">
+<meta name="twitter:image" content="https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LfD58EbdYeg5SpfVrCe%2F-LfIS1JjlD2-D9pJ1e2q%2F-LfIS8t3h5lrWGT71faf%2Fimage.png?alt=media&token=5686febb-8c9c-40d0-ba51-ed9253a549c8">
+  <link rel="canonical" href="http://yoursite.com/2019/10/22/容器技术原理/">
 
 
 <script id="page-configurations">
@@ -84,7 +91,7 @@
   };
 </script>
 
-  <title>Linux——NAT原理 | wfang's notes</title>
+  <title> | wfang's notes</title>
   <meta name="generator" content="Hexo 3.9.0">
   
 
@@ -224,7 +231,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/22/natfilter/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/22/容器技术原理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="WFang">
@@ -236,7 +243,7 @@
       <meta itemprop="name" content="wfang's notes">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">Linux——NAT原理
+        <h1 class="post-title" itemprop="name headline">
 
           
         </h1>
@@ -252,25 +259,12 @@
                 
               
 
-              <time title="创建时间：2019-10-22 23:35:36 / 修改时间：23:47:17" itemprop="dateCreated datePublished" datetime="2019-10-22T23:35:36+08:00">2019-10-22</time>
+              <time title="创建时间：2019-10-22 23:43:26 / 修改时间：23:44:15" itemprop="dateCreated datePublished" datetime="2019-10-22T23:43:26+08:00">2019-10-22</time>
             </span>
           
             
 
             
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/计算机网络/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -284,7 +278,7 @@
       
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/2019/10/22/natfilter/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/10/22/natfilter/" itemprop="commentCount"></span></a>
+    <a title="disqus" href="/2019/10/22/容器技术原理/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/10/22/容器技术原理/" itemprop="commentCount"></span></a>
   </span>
   
   
@@ -298,38 +292,71 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="Netfilter框架"><a href="#Netfilter框架" class="headerlink" title="Netfilter框架"></a>Netfilter框架</h2><blockquote>
-<p>Netfilter is a framework for packet manipulation and filtering. The framework provides access to packets through five hooks in the Linux kernel at key points in packet processing. The hooks exist for both IPv4 and IPv6. Figure 1 shows in which order the Netfilter hooks are called when processing an IPv4 packet. The return value from a Netfilter hook must be one of five options: NF_ACCEPT, NF_DROP, NF_STOLEN, NF_QUEUE, NF_REPEAT. The first two options accept or drop a packet, respectively. If multiple functions are attached to a hook, the packet will be dropped if a single function returns NF_DROP. The return value NF_STOLEN indicates that a packet has been consumed by the hook function and further processing by other functions attached to the hook is not possible. NF_QUEUE indicates that the packet should be inserted into a queue, and NF_REPEAT indicates that the hook function should be called again. When functions are registered to Netfilter hooks, a priority of the functions is given. This priority determines in which order the functions attached to the same hook are called. </p>
-</blockquote>
-<a id="more"></a>
-
-<h2 id="Netfilter执行流程"><a href="#Netfilter执行流程" class="headerlink" title="Netfilter执行流程"></a>Netfilter执行流程</h2><p><img src="/uploads/natfilter/network_layer.png" alt="network_layer"></p>
-<p>该图描述网络层的工作流程，其中netfilter嵌入到网络层的5个钩子（链）。</p>
-<h3 id="路由规则"><a href="#路由规则" class="headerlink" title="路由规则"></a>路由规则</h3><blockquote>
-<p>The default parameters used for calculating routes are destination address and out interface. Routing in Linux is carried out by either rule based routing tables or default routing tables. Rule based routing tables provide flexibility to resolve routes (destination address, out device) based on multiple parameters e.g. source address etc apart from the default paramters. The functionality of route lookup is implemented in ip_fib.c and ip_fib.h.  If this functionality is disabled in the kernel configuration, then the two default tables, local and main are used by default. </p>
-<p><strong>1</strong>. <strong>Route Cache:</strong><br>A route cache, based on the previous transmissions, is maintained to quickly resolve the routes for outing packets.  The route cache is searched by using a “hash code” composed of the destination address, source address, rt_hash_mask and tos field values. </p>
-<p>The route cache search is carried out in the __ip_route_output_key()  function. If the search is successful, it returns a pointer to rtable structure immediately. A reference counter to the route cache entry is incremented every time it is successfully searched. As long as the reference count is positive, the entry is not deleted. </p>
-<p>If there is no route in the route cache, the __ip_route_output_key() function calls __ip_route_ip_slow() function to search the forwarding-information base (FIB) for a possible route for the packet. </p>
-<p><strong>2. Ip_route_output_slow (FIB lookup process)</strong></p>
-<p>When a route cannot be resolved through the route cache, ip_route_out_slow is used to find a route for the outgoing packet.</p>
-<p>This function also returns a pointer to routing table entry. Pointers to struct net and struct flowi4 are given as arguments. Information about the source address, destination address, possible output interface is gathered from the flowi4 structure passed as an argument. The type of service,  input interface (as loopback by default) and and scope of the flow (RT_SCOPE_LINK, RT_SCOPE_UNIVERSE) is gathered from the “net” argument. </p>
-<p>If  the source address of the packet is available in the flowi4 argument , the out device is found through __ip_dev_find() function, which returns the first device matching the source address. This function also uses a hashtable for finding the net device.  If it fails to find a relevant out_dev using hash tables, it uses the FIB local table as the last resort. For unicast traffic, it is critical to find the out device. If the function fails to return a valid device for given source address, it returns with an error message.</p>
-<p>If the source address is not available in flowi4 structure, but an ifindex is given, the function searches through another hash list of interface index to find the relevant device. </p>
-<p>If the out_dev is still unresolved or if it is not running (!IFF_UP),  the function does not proceed further and returns with an error message.</p>
-<p>In case there is not destination address available in the flowi4 structure, the destination address is set to the source address of the packet. If that is also not available, both the source and destination addresses are set to the LOOP_BACK address. At this point, the FIB lookup is performed.</p>
-<p><strong>Fib_lookup:</strong></p>
-<p>This is the main algorithm behind resolving routes for outgoing packets. It provides the support for rule based routing providing flexible decision making. Several routing tables are used to find the route for a datagram.  Selectors and type of rule decide if and how a packet should be transformed.</p>
-<p>These rules are represented in a form of a list in ascending priority.  Three rules, “ local”, “ main” and “default” are defined by default.</p>
-<p><img src="/uploads/natfilter/fib_rule.gif" alt="fib_rule"></p>
-</blockquote>
-<h2 id="Connect-Track-CT-模块"><a href="#Connect-Track-CT-模块" class="headerlink" title="Connect Track(CT)模块"></a>Connect Track(CT)模块</h2><p>CT模块负责跟踪连接情况，虽然NAT模块和CT模块是两个单独的模块，但是NAT模块需要依赖于CT模块。</p>
-<h2 id="NAT模块"><a href="#NAT模块" class="headerlink" title="NAT模块"></a>NAT模块</h2><p>ip_do_table table函数入口</p>
-<p>nf_nat_l3proto_ipv4.c nat模块源码</p>
-<p>struct net，抽象了linux的网络结构，其中net-&gt;nf描述netfilter，nf_register_net_hooks 向netfilter中的某个链上注册hook</p>
-<p>iptable中的每张表，注册在几个链上，就注册几个handler处理规则</p>
-<p>packet_type 包类型，包含了该包的处理handler</p>
-<p>af_inet.c::inet_init  初始化网络栈，包括注册packet_type</p>
-<p>flowi4 描述了包的流向，其中的信息用于route后，构造ip头</p>
+        <p><strong>容器技术的核心是linux提供的两种隔离技术：NameSpace ，Cgroup</strong></p>
+<p>‌</p>
+<p><strong>NameSpace</strong></p>
+<p>‌</p>
+<p>namespace是对操作系统这类软件资源的隔离，更形象的说namespace改变了进程<strong>看待自身存在环境的视角</strong>。</p>
+<p>‌</p>
+<p>命名空间有6种分类(实际是7种)，定义了操作系统不同资源的隔离：</p>
+<p><img src="https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LfD58EbdYeg5SpfVrCe%2F-LfIS1JjlD2-D9pJ1e2q%2F-LfIS8t3h5lrWGT71faf%2Fimage.png?alt=media&token=5686febb-8c9c-40d0-ba51-ed9253a549c8" alt="img"></p>
+<p>命名空间分类Enter a caption for this image (optional)</p>
+<p>‌</p>
+<p>查看进程13532的命名空间：</p>
+<p><img src="https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LfD58EbdYeg5SpfVrCe%2F-LfIS1JjlD2-D9pJ1e2q%2F-LfISDnwYE0lV-e7hgyO%2Fimage.png?alt=media&token=1f1024ba-5c9a-45c6-8841-ba2b38dd52a3" alt="img"></p>
+<p>Enter a caption for this image (optional)</p>
+<p>‌</p>
+<p><strong>Cgroups</strong></p>
+<p>‌</p>
+<p>Control groups(控制组)简称为Cgroup，可以将计算机的资源(物理资源)组织成层次树的结构，来控制、监测进程对这些资源的使用情况。</p>
+<p>‌</p>
+<p>在如下的层次结构中，通过cgourp FS来组织资源使用关系，这里依附(attach)在层次结构上有两种资源分别是CPU和内存。</p>
+<p><img src="https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LfD58EbdYeg5SpfVrCe%2F-LfIS1JjlD2-D9pJ1e2q%2F-LfISNm0Rji4OZsyMe37%2Fimage.png?alt=media&token=d5b888ba-f528-40f4-8fab-9baf34d2e796" alt="img"></p>
+<p>Enter a caption for this image (optional)</p>
+<p>‌</p>
+<p><strong>示例:</strong></p>
+<p>‌</p>
+<p>可以观察到程序asd跑满了一个核：</p>
+<p><img src="https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LfD58EbdYeg5SpfVrCe%2F-LfIS1JjlD2-D9pJ1e2q%2F-LfISR4gGh5geyCIF50a%2Fimage.png?alt=media&token=112bf18a-6536-4da4-80ab-ed807ca7b24f" alt="img"></p>
+<p>Enter a caption for this image (optional)</p>
+<p>‌</p>
+<p>然后，我们在/cgroup/cpu创建一个my_test得文件夹，那么my_test就是一个cgroup</p>
+<p><img src="https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LfD58EbdYeg5SpfVrCe%2F-LfIS1JjlD2-D9pJ1e2q%2F-LfISVmSeNECzNZOCDQL%2Fimage.png?alt=media&token=0db013ac-1eff-447a-afdb-e63b7924ee32" alt="img"></p>
+<p>Enter a caption for this image (optional)</p>
+<p>‌</p>
+<p>可以看到my_test中自动初始化了很多配置文件，可以用来控制cpu的使用限制，这里我们改动两个配置：</p>
+<p>‌</p>
+<p>cpu.cfs_period_us = 100000      // 统计周期100ms</p>
+<p>‌</p>
+<p>cpu.cfs_quota_us = 10000         // 在统计周期内允许使用的cpu时间：10ms</p>
+<p>‌</p>
+<p>这样我们就定义了一个cpu限制为10%的cgroup，接着将 pid = 834 写入 cgroup.procs文件内，观察top:</p>
+<p><img src="https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LfD58EbdYeg5SpfVrCe%2F-LfIS1JjlD2-D9pJ1e2q%2F-LfISYoC1_ZlckkTs6pR%2Fimage.png?alt=media&token=68cd7a36-b94b-42de-ab99-dbc8b6366e96" alt="img"></p>
+<p>Enter a caption for this image (optional)</p>
+<p>‌</p>
+<p><strong>进程与容器在概念上的边界</strong></p>
+<p>‌</p>
+<p>从上述的基础知识看以看到，进程和容器在概念上边界越来越模糊，容器即为具有<strong>特定命名空间及Cgroup的进程集合</strong>。</p>
+<p>‌</p>
+<p><img src="https://www.backblaze.com/blog/wp-content/uploads/2018/06/vms.png" alt="Virtual Machine System Architecture Diagram"><img src="https://www.backblaze.com/blog/wp-content/uploads/2018/06/containers.png" alt="Containers System Architecture Diagram">     </p>
+<p>‌</p>
+<p>虚拟机   vs   容器</p>
+<p><img src="http://wiki.baidu.com/download/attachments/754992175/image2019-5-17_10-34-59.png?version=1&modificationDate=1558060499000&api=v2" alt="img"></p>
+<p>Enter a caption for this image (optional)</p>
+<p>‌</p>
+<p>宿主机与容器</p>
+<p>‌</p>
+<p>从以上内容上可以看出为什么说 容器要比虚拟机的资源利用率高，因为 容器内的进程就是 <strong>宿主机上的普通进程</strong>，直接利用 宿主机上的各种资源。</p>
+<p><img src="https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LfD58EbdYeg5SpfVrCe%2F-LfISyCmT54mSc-HS2ft%2F-LfIT0eAUW_Iq6ZjDyFd%2Fimage.png?alt=media&token=6e8a8bc2-c4c5-40d1-9306-d9db370ade65" alt="img"></p>
+<p>Enter a caption for this image (optional)</p>
+<p>‌</p>
+<p>在宿主机上观察一个docker容器实例，如上图，上面的每一行都是一个进程，进程间有继承关系。</p>
+<p>‌</p>
+<p><strong>contaninerd</strong>: daemon进程</p>
+<p>‌</p>
+<p><strong>contaninerd-shim</strong>：容器的”0”号进程</p>
+<p>‌</p>
+<p><strong>其余</strong>：容器内的各个进程</p>
 
     </div>
 
@@ -346,7 +373,7 @@
     <strong>本文作者： </strong>WFang</li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://yoursite.com/2019/10/22/natfilter/" title="Linux——NAT原理">http://yoursite.com/2019/10/22/natfilter/</a>
+    <a href="http://yoursite.com/2019/10/22/容器技术原理/">http://yoursite.com/2019/10/22/容器技术原理/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
@@ -356,25 +383,14 @@
       
 
       <footer class="post-footer">
-          
-            
-          
-          <div class="post-tags">
-            
-              <a href="/tags/计算机网络/" rel="tag"># 计算机网络</a>
-            
-              <a href="/tags/netfilter/" rel="tag"># netfilter</a>
-            
-          </div>
-        
 
         
 
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/2019/10/08/golang学习——pprof/" rel="next" title="golang性能分析">
-                  <i class="fa fa-chevron-left"></i> golang性能分析
+                <a href="/2019/10/22/innodb内存管理/" rel="next" title="Innodb内存管理">
+                  <i class="fa fa-chevron-left"></i> Innodb内存管理
                 </a>
               
             </div>
@@ -382,10 +398,6 @@
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-              
-                <a href="/2019/10/22/innodb内存管理/" rel="prev" title="Innodb内存管理">
-                  Innodb内存管理 <i class="fa fa-chevron-right"></i>
-                </a>
               
             </div>
           </div>
@@ -443,8 +455,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Netfilter框架"><span class="nav-number">1.</span> <span class="nav-text">Netfilter框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Netfilter执行流程"><span class="nav-number">2.</span> <span class="nav-text">Netfilter执行流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#路由规则"><span class="nav-number">2.1.</span> <span class="nav-text">路由规则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Connect-Track-CT-模块"><span class="nav-number">3.</span> <span class="nav-text">Connect Track(CT)模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NAT模块"><span class="nav-number">4.</span> <span class="nav-text">NAT模块</span></a></li></ol></div>
-        
       </div>
       <!--/noindex-->
 
@@ -660,9 +670,9 @@
 </script>
 <script>
   function disqus_config() {
-    this.page.url = "http://yoursite.com/2019/10/22/natfilter/";
-    this.page.identifier = "2019/10/22/natfilter/";
-    this.page.title = 'Linux——NAT原理';};
+    this.page.url = "http://yoursite.com/2019/10/22/容器技术原理/";
+    this.page.identifier = "2019/10/22/容器技术原理/";
+    this.page.title = '';};
   function loadComments() {
     if (window.DISQUS) {
       DISQUS.reset({
